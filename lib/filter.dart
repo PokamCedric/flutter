@@ -2,22 +2,24 @@ import 'package:flutter/material.dart';
 
 
 class Filter extends StatelessWidget {
+  const Filter({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+    return Container(
+      width: 250,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const TextField(
             decoration: InputDecoration(labelText: 'Keywords'),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           DropdownButtonFormField<String>(
-            decoration: InputDecoration(labelText: 'Field'),
+            decoration: const InputDecoration(labelText: 'Field'),
             items: [
               'Food security, agriculture',
-              'Peace-building and crisis prevention',
+              'Peace-building and crisis',
               'Infrastructure, ICT'
             ].map((field) => DropdownMenuItem<String>(
                   value: field,
@@ -25,9 +27,9 @@ class Filter extends StatelessWidget {
                 )).toList(),
             onChanged: (value) {},
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           DropdownButtonFormField<String>(
-            decoration: InputDecoration(labelText: 'Type of function'),
+            decoration: const InputDecoration(labelText: 'Type of function'),
             items: [
               'All types of function',
               'Integrated Expert'
@@ -37,9 +39,9 @@ class Filter extends StatelessWidget {
                 )).toList(),
             onChanged: (value) {},
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           DropdownButtonFormField<String>(
-            decoration: InputDecoration(labelText: 'Country'),
+            decoration: const InputDecoration(labelText: 'Country'),
             items: [
               'All countries',
               'Kenya',
@@ -52,12 +54,12 @@ class Filter extends StatelessWidget {
                 )).toList(),
             onChanged: (value) {},
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           ElevatedButton(
             onPressed: () {
               // Handle search/filter action
             },
-            child: Text('Search Jobs'),
+            child: const Text('Search Jobs'),
           ),
         ],
       ),

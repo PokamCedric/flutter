@@ -21,19 +21,19 @@ class Datatable extends StatelessWidget {
               (job) => DataRow(
                 cells: [
                 DataCell(PaddedTextCell(
-                  text: job['title']!,
-                  width: 300,
+                  text: job['title']?? "",
+                  width: 250,
                 )),
                 DataCell(PaddedTextCell(
-                  text: job['type']!,
+                  text: job['type']?? "",
                   width: 100,
                 )),
                 DataCell(PaddedTextCell(
-                  text: job['country']!,
-                  width: 50,
+                  text: job['country']?? "",
+                  width: 100,
                 )),
                 DataCell(PaddedTextCell(
-                  text: job['field']!,
+                  text: job['field']?? "",
                   width: 200,
                 )),
               ]),
