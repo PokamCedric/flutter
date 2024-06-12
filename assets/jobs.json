@@ -1,43 +1,80 @@
 [
-    {
-      "title": "Senior Expert in Inclusive Scaling",
-      "country": "Kenya",
-      "field": "Food security, agriculture"
-    },
-    {
-      "title": "Senior Researcher Food Environment and Consumer Behavior",
-      "country": "Kenya",
-      "field": "Food security, agriculture"
-    },
-    {
-      "title": "Specialist - Vegetable Variety Scaling",
-      "country": "Benin",
-      "field": "Food security, agriculture"
-    },
-    {
-      "title": "Innovation Scaling Focal Point (m/f/d)",
-      "country": "Sri Lanka",
-      "field": "Food security, agriculture"
-    },
-    {
-      "title": "Spécialiste intégrée de la recherche et de la rédaction",
-      "country": "Madagascar",
-      "field": "Peace-building and crisis prevention"
-    },
-    {
-      "title": "Environmental Economist",
-      "country": "Kenya",
-      "field": "Environmental protection and sustainable use of natural resources"
-    },
-    {
-      "title": "Senior Fellow - Energy transition and EU-India partnership",
-      "country": "India",
-      "field": "Infrastructure, ICT"
-    },
-    {
-      "title": "Specialist in foresight for a territorialization of agroecology",
-      "country": "Senegal",
-      "field": "Food security, agriculture"
-    }
-  ]
-  
+  {
+    "title": "Senior Expert in Inclusive Scaling",
+    "type": "Integrated Expert",
+    "country": "Kenya",
+    "field": "Food security, agriculture"
+  },
+  {
+    "title": "Senior Researcher Food Environment and Consumer Behavior",
+    "type": "Integrated Expert",
+    "country": "Kenya",
+    "field": "Food security, agriculture"
+  },
+  {
+    "title": "Specialist - Vegetable Variety Scaling (WorldVeg, Benin)",
+    "type": "Integrated Expert",
+    "country": "Benin",
+    "field": "Food security, agriculture"
+  },
+  {
+    "title": "Innovation Scaling Focal Point (m/f/d)",
+    "type": "Integrated Expert",
+    "country": "Sri Lanka",
+    "field": "Food security, agriculture"
+  },
+  {
+    "title": "Innovation Scaling Focal Point (m/w/d)",
+    "type": "Integrated Expert",
+    "country": "Sri Lanka",
+    "field": "Food security, agriculture"
+  },
+  {
+    "title": "Spécialiste intégrée de la recherche et de la rédaction de rapports d'enquête sur la lutte contre la corruption",
+    "type": "Integrated Expert",
+    "country": "Madagascar",
+    "field": "Peace-building and crisis prevention"
+  },
+  {
+    "title": "Integrierte Fachkraft für Recherche und Erstellung von Untersuchungsberichten zur Korruption",
+    "type": "Integrated Expert",
+    "country": "Madagascar",
+    "field": "Peace-building and crisis prevention"
+  },
+  {
+    "title": "Environmental Economist",
+    "type": "Integrated Expert",
+    "country": "Kenya",
+    "field": "Environmental protection and sustainable use of natural resources"
+  },
+  {
+    "title": "Senior Fellow - Energy transition and EU-India partnership for clean technologies",
+    "type": "Integrated Expert",
+    "country": "India",
+    "field": "Infrastructure, ICT"
+  },
+  {
+    "title": "Specialist in foresight for a territorialization of agroecology",
+    "type": "Integrated Expert",
+    "country": "Senegal",
+    "field": "Food security, agriculture"
+  },
+  {
+    "title": "Expert*in für steuerlichen Informationsaustausch (EOI)",
+    "type": "Integrated Expert",
+    "country": "South Africa",
+    "field": "Democracy, civil society and public administration"
+  },
+  {
+    "title": "Value Added Tax (VAT) Experte",
+    "type": "Integrated Expert",
+    "country": "South Africa",
+    "field": "Democracy, civil society and public administration"
+  },
+  {
+    "title": "Expert (m/f/d) Strategic Communication and Knowledge Management for Natural Farming",
+    "type": "Integrated Expert",
+    "country": "India",
+    "field": "Food security, agriculture"
+  }
+]

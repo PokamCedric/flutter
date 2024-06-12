@@ -12,6 +12,7 @@ class Datatable extends StatelessWidget {
       child: DataTable(
         columns: const [
           DataColumn(label: Text('Job Title')),
+          DataColumn(label: Text('Type of function')),
           DataColumn(label: Text('Country')),
           DataColumn(label: Text('Field')),
         ],
@@ -21,15 +22,19 @@ class Datatable extends StatelessWidget {
                 cells: [
                 DataCell(PaddedTextCell(
                   text: job['title']!,
-                  width: 300, // Fixed width for the Job Title column
+                  width: 300,
+                )),
+                DataCell(PaddedTextCell(
+                  text: job['type']!,
+                  width: 100,
                 )),
                 DataCell(PaddedTextCell(
                   text: job['country']!,
-                  width: 50, // Adjust width as necessary
+                  width: 50,
                 )),
                 DataCell(PaddedTextCell(
                   text: job['field']!,
-                  width: 200, // Adjust width as necessary
+                  width: 200,
                 )),
               ]),
             )
