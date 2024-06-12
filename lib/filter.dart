@@ -9,7 +9,7 @@ class Filter extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TextField(
+          const TextField(
             decoration: InputDecoration(labelText: 'Keywords'),
           ),
           SizedBox(height: 10),
