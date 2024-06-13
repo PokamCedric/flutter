@@ -5,25 +5,37 @@ class Filter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const filterWidth = 250.0;
+    const double filterWidth = 250.0;
+    final BoxDecoration filterBoxDecoration = BoxDecoration(
+      border: Border.all(color: Theme.of(context).primaryColor),
+      borderRadius: BorderRadius.zero,
+    );
 
     return Container(
+      height: 300.0,
       width: filterWidth,
+      padding: const EdgeInsets.all(10.0),
+      decoration: filterBoxDecoration,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const TextField(
-            decoration: InputDecoration(labelText: 'Keywords'),
+          Container(
+            decoration: filterBoxDecoration,
+            child: const TextField(
+              decoration: InputDecoration(hintText: 'Search'),
+            ),
           ),
           const SizedBox(height: 10),
           CustomDropdown(
             label: 'Field',
             items: const [
+              'All Fields',
               'Food security, agriculture',
               'Peace-building and crisis prevention',
               'Infrastructure, ICT'
             ],
             filterWidth: filterWidth,
+            filterBoxDecoration: filterBoxDecoration,
             onChanged: (value) {},
           ),
           const SizedBox(height: 10),
@@ -34,6 +46,7 @@ class Filter extends StatelessWidget {
               'Integrated Expert'
             ],
             filterWidth: filterWidth,
+            filterBoxDecoration: filterBoxDecoration,
             onChanged: (value) {},
           ),
           const SizedBox(height: 10),
@@ -47,6 +60,7 @@ class Filter extends StatelessWidget {
               'Madagascar'
             ],
             filterWidth: filterWidth,
+            filterBoxDecoration: filterBoxDecoration,
             onChanged: (value) {},
           ),
           const SizedBox(height: 10),
@@ -60,37 +74,59 @@ class Filter extends StatelessWidget {
       ),
     );
   }
+
+  BoxDecoration filterBoxDecoration(BuildContext context) {
+    return BoxDecoration(
+      border: Border.all(color: Theme.of(context).primaryColor),
+      borderRadius: BorderRadius.zero,
+    );
+  }
 }
 
 class CustomDropdown extends StatelessWidget {
   final String label;
   final List<String> items;
   final double filterWidth;
+  final BoxDecoration filterBoxDecoration;
+
   final ValueChanged<String?> onChanged;
 
+
   const CustomDropdown({
-    super.key,
+    Key? key,
     required this.label,
     required this.items,
     required this.filterWidth,
+    required this.filterBoxDecoration,
     required this.onChanged,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonFormField<String>(
-      decoration: InputDecoration(labelText: label),
-      items: items.map((item) => DropdownMenuItem<String>(
-        value: item,
-        child: Container(
-          width: filterWidth - 60.0,
-          child: Text(
-            item,
-            overflow: TextOverflow.ellipsis,
-          ),
+    const double horizontalPadding = 10.0;
+
+    return Container(
+      decoration: filterBoxDecoration,
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: label,
+          border: InputBorder.none, // Remove the default border
+          contentPadding: const EdgeInsets.symmetric(horizontal: horizontalPadding),
         ),
-      )).toList(),
-      onChanged: onChanged,
+        items: items.map((item) => DropdownMenuItem<String>(
+          value: item,
+          child: Container(
+            width: filterWidth - (60.0 + horizontalPadding),
+            child: Text(
+              item,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ),
+        )).toList(),
+        onChanged: onChanged,
+        style: Theme.of(context).textTheme.bodyLarge,
+      ),
     );
   }
 }

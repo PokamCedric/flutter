@@ -47,7 +47,7 @@ class PaddedTextCell extends StatelessWidget {
   final String text;
   final double width;
 
-  const PaddedTextCell({
+  const PaddedTextCell({super.key,
     required this.text,
     required this.width,
   });
