@@ -1,11 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:job_listings/jobs.dart';
+import 'package:job_listings/models/filter_model.dart';
 import 'jobs_table.dart';
 import 'filter.dart';
 
 class JobListingsPage extends StatefulWidget {
+  const JobListingsPage({super.key});
+
   @override
   _JobListingsPageState createState() => _JobListingsPageState();
 }
@@ -37,20 +38,43 @@ class _JobListingsPageState extends State<JobListingsPage> {
           }
 
           final jobs = snapshot.data!;
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Flexible(
-                flex: 3,
-                child: Datatable(jobs: jobs),
-              ),
-              const SizedBox(width: 20), // Espace fixe entre Datatable et Filter
-              Flexible(
-                flex: 1,
-                child: Filter(),
-              ),
-            ],
+          return Padding(
+            padding: const EdgeInsets.only(top: 50.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Flexible(
+                  flex: 3,
+                  child: Datatable(jobs: jobs),
+                ),
+                const SizedBox(width: 20),
+                Flexible(
+                  flex: 1,
+                  child: Filter(
+                    filters: [
+                      FilterModel('Field', [
+                        'All Fields',
+                        'Food security, agriculture',
+                        'Peace-building and crisis prevention',
+                        'Infrastructure, ICT'
+                      ]),
+                      FilterModel('Type of function', [
+                        'All types of function',
+                        'Integrated Expert'
+                      ]),
+                      FilterModel('Country', [
+                        'All countries',
+                        'Kenya',
+                        'Sri Lanka',
+                        'Benin',
+                        'Madagascar'
+                      ]),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           );
         },
       ),
