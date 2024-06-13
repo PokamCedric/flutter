@@ -10,17 +10,18 @@ class Datatable extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: DataTable(
-        columns: const [
-          DataColumn(label: Text('Job Title')),
-          DataColumn(label: Text('Type of function')),
-          DataColumn(label: Text('Country')),
-          DataColumn(label: Text('Field')),
+        columns:  [
+          DataColumn(label: columnTitle(context, 'Job Title')),
+          DataColumn(label: columnTitle(context, 'Type of function')),
+          DataColumn(label: columnTitle(context, 'Country')),
+          DataColumn(label: columnTitle(context, 'Field')),
         ],
         rows: jobs
             .map(
               (job) => DataRow(
                 cells: [
                 DataCell(PaddedTextCell(
+                  color: Theme.of(context).colorScheme.secondary,
                   text: job['title']?? "",
                   width: 250,
                 )),
@@ -42,14 +43,18 @@ class Datatable extends StatelessWidget {
       ),
     );
   }
+
+  Text columnTitle(BuildContext context, String text) => Text(text, style: TextStyle(color: Theme.of(context).primaryColor));
 }
 class PaddedTextCell extends StatelessWidget {
   final String text;
   final double width;
+  final Color? color;
 
-  const PaddedTextCell({super.key,
+   const PaddedTextCell({super.key,
     required this.text,
     required this.width,
+    this.color
   });
 
   @override
@@ -61,6 +66,7 @@ class PaddedTextCell extends StatelessWidget {
         text,
         softWrap: true, // Enable text wrapping
         overflow: TextOverflow.clip, // Clip overflowing text
+        style: TextStyle(color: color),
       ),
     );
   }

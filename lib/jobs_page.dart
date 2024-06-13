@@ -48,7 +48,7 @@ class _JobListingsPageState extends State<JobListingsPage> {
                   flex: 3,
                   child: Datatable(jobs: jobs),
                 ),
-                const SizedBox(width: 20),
+                const SizedBox(width: 30),
                 Flexible(
                   flex: 1,
                   child: Filter(

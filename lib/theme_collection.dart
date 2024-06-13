@@ -4,7 +4,7 @@ class CollectionTheme {
   ///Get collection theme
   /// primaryLight/primaryDark...
   static ThemeData getCollectionTheme({
-    String theme = "primaryLight",
+    String theme = "greenLight",
     String font = "Raleway",
   }) {
     ColorScheme colorScheme;
@@ -39,8 +39,8 @@ class CollectionTheme {
         break;
       case "greenLight":
         colorScheme = const ColorScheme.light(
-          primary: Color(0xff82B541),
-          secondary: Color(0xffff8a65),
+          primary: Color.fromARGB(255, 112, 177, 27),
+          secondary: Color(0xff82B541),
           surface: Color(0xfff2f2f2),
           background: Colors.white,
           error: Colors.red,
@@ -53,8 +53,8 @@ class CollectionTheme {
         break;
       case "greenDark":
         colorScheme = const ColorScheme.dark(
-          primary: Color(0xff82B541),
-          secondary: Color(0xffff8a65),
+          primary: Color.fromARGB(255, 112, 177, 27),
+          secondary: Color(0xff82B541),
           surface: Color(0xff121212),
           background: Color(0xff010101),
           error: Colors.red,
