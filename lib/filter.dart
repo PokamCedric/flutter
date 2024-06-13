@@ -13,11 +13,19 @@ class Filter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double filterWidth = 250.0;
     final BoxDecoration filterBoxDecoration = BoxDecoration(
       border: Border.all(color: Theme.of(context).primaryColor),
       borderRadius: BorderRadius.zero,
     );
+
+    final double screenWidth = MediaQuery.of(context).size.width;
+    double filterWidth;
+
+    if (screenWidth > 1100) {
+      filterWidth = 250.0;
+    } else {
+      filterWidth = 200.0;
+    }
 
     return IntrinsicHeight(
       child: Container(

@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:job_listings/text_cell.dart';
 
 class Datatable extends StatelessWidget {
   final List<Map<String, String>> jobs;
 
-  Datatable({required this.jobs});
+  const Datatable({super.key, required this.jobs});
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    double tableWidth;
+
+    if (screenWidth > 1100) {
+      tableWidth = 600.0;
+    } else {
+      tableWidth = 400.0;
+    }
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: DataTable(
@@ -23,19 +33,19 @@ class Datatable extends StatelessWidget {
                 DataCell(PaddedTextCell(
                   color: Theme.of(context).colorScheme.secondary,
                   text: job['title']?? "",
-                  width: 250,
+                  width: tableWidth * (2/6),
                 )),
                 DataCell(PaddedTextCell(
                   text: job['type']?? "",
-                  width: 100,
+                  width: tableWidth * (1/6),
                 )),
                 DataCell(PaddedTextCell(
                   text: job['country']?? "",
-                  width: 100,
+                  width: tableWidth * (1/6),
                 )),
                 DataCell(PaddedTextCell(
                   text: job['field']?? "",
-                  width: 200,
+                  width: tableWidth * (2/6),
                 )),
               ]),
             )
@@ -45,29 +55,4 @@ class Datatable extends StatelessWidget {
   }
 
   Text columnTitle(BuildContext context, String text) => Text(text, style: TextStyle(color: Theme.of(context).primaryColor));
-}
-class PaddedTextCell extends StatelessWidget {
-  final String text;
-  final double width;
-  final Color? color;
-
-   const PaddedTextCell({super.key,
-    required this.text,
-    required this.width,
-    this.color
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: width, // Fixed width for the cell
-      padding: const EdgeInsets.symmetric(vertical: 8.0), // Custom vertical padding
-      child: Text(
-        text,
-        softWrap: true, // Enable text wrapping
-        overflow: TextOverflow.clip, // Clip overflowing text
-        style: TextStyle(color: color),
-      ),
-    );
-  }
 }
