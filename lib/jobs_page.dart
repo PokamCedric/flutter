@@ -51,7 +51,7 @@ class _JobListingsPageState extends State<JobListingsPage> {
                 const SizedBox(width: 30),
                 Flexible(
                   flex: 1,
-                  child: Filter(
+                  child: FilterWidget (
                     filters: [
                       FilterModel('Field', [
                         'All Fields',
