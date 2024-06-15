@@ -14,7 +14,7 @@ class JobListingsPage extends StatefulWidget {
 
 class _JobListingsPageState extends State<JobListingsPage> {
   late Future<List<Map<String, String>>> _futureJobs;
-  int _rowsPerPage = 25;
+  int _rowsPerPage = 10;
   final List<int> _availableRowsPerPage = [10, 25, 50];
   int _currentPage = 1;
   int _totalHits = 13; // Dummy value for total hits
@@ -28,6 +28,13 @@ class _JobListingsPageState extends State<JobListingsPage> {
   void _handlePageChange(int newPage) {
     setState(() {
       _currentPage = newPage;
+    });
+  }
+
+  void _handleRowsPerPageChange(int? newRowsPerPage) {
+    setState(() {
+      _rowsPerPage = newRowsPerPage!;
+      _currentPage = 1; // Reset to first page when rows per page changes
     });
   }
 
@@ -51,6 +58,8 @@ class _JobListingsPageState extends State<JobListingsPage> {
           }
 
           final jobs = snapshot.data!;
+          final totalPages = (_totalHits / _rowsPerPage).ceil();
+
           return Padding(
             padding: const EdgeInsets.only(top: 50.0),
             child: Row(
@@ -64,28 +73,29 @@ class _JobListingsPageState extends State<JobListingsPage> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 20.0),
                         child: PaginationHeader(
-                          totalPages: 2,
+                          totalPages: totalPages,
                           containerWidth: containerWidth,
                           totalHits: _totalHits,
                           rowsPerPage: _rowsPerPage,
                           availableRowsPerPage: _availableRowsPerPage,
-                          onRowsPerPageChanged: (value) {
-                            setState(() {
-                              _rowsPerPage = value!;
-                            });
-                          },
+                          onRowsPerPageChanged: _handleRowsPerPageChange,
                           currentPage: _currentPage,
                           onPageChanged: _handlePageChange,
                         ),
                       ),
-                      Datatable(jobs: jobs, containerWidth: containerWidth),
+                      Datatable(
+                        jobs: jobs,
+                        containerWidth: containerWidth,
+                        rowsPerPage: _rowsPerPage,
+                        currentPage: _currentPage,
+                      ),
                     ],
                   ),
                 ),
                 const SizedBox(width: 50), // space between table and filter
                 Flexible(
                   flex: 1,
-                  child: FilterWidget (
+                  child: FilterWidget(
                     filters: [
                       FilterModel('Field', [
                         'All Fields',
