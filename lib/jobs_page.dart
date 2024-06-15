@@ -61,24 +61,28 @@ class _JobListingsPageState extends State<JobListingsPage> {
                   flex: 3,
                   child: Column(
                     children: [
-                      PaginationHeader(
-                        containerWidth: containerWidth,
-                        totalHits: _totalHits,
-                        rowsPerPage: _rowsPerPage,
-                        availableRowsPerPage: _availableRowsPerPage,
-                        onRowsPerPageChanged: (value) {
-                          setState(() {
-                            _rowsPerPage = value!;
-                          });
-                        },
-                        currentPage: _currentPage,
-                        onPageChanged: _handlePageChange,
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 20.0),
+                        child: PaginationHeader(
+                          totalPages: 2,
+                          containerWidth: containerWidth,
+                          totalHits: _totalHits,
+                          rowsPerPage: _rowsPerPage,
+                          availableRowsPerPage: _availableRowsPerPage,
+                          onRowsPerPageChanged: (value) {
+                            setState(() {
+                              _rowsPerPage = value!;
+                            });
+                          },
+                          currentPage: _currentPage,
+                          onPageChanged: _handlePageChange,
+                        ),
                       ),
                       Datatable(jobs: jobs, containerWidth: containerWidth),
                     ],
                   ),
                 ),
-                const SizedBox(width: 30),
+                const SizedBox(width: 50), // space between table and filter
                 Flexible(
                   flex: 1,
                   child: FilterWidget (
