@@ -17,6 +17,17 @@ class _FilterWidgetState extends State<FilterWidget> {
   final Map<String, String> _selectedFilters = {};
 
   @override
+  void initState() {
+    super.initState();
+    // Initialize _selectedFilters with the first item of each filter's items list
+    for (var filter in widget.filters) {
+      if (filter.items.isNotEmpty) {
+        _selectedFilters[filter.label] = filter.items.first;
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final BoxDecoration filterBoxDecoration = BoxDecoration(
       border: Border.all(color: Theme.of(context).primaryColor),
@@ -77,6 +88,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                 ...widget.filters.map((filter) => CustomDropdown(
                       label: filter.label,
                       items: filter.items,
+                      value: _selectedFilters[filter.label]!, // Ensure this line reflects the selected filter value
                       filterWidth: filterWidth,
                       filterBoxDecoration: filterBoxDecoration,
                       onChanged: (value) {
@@ -105,6 +117,12 @@ class _FilterWidgetState extends State<FilterWidget> {
                   onPressed: () {
                     setState(() {
                       _selectedFilters.clear();
+                      // Reinitialize with the first item of each filter's items list
+                      for (var filter in widget.filters) {
+                        if (filter.items.isNotEmpty) {
+                          _selectedFilters[filter.label] = filter.items.first;
+                        }
+                      }
                     });
                     widget.onFilterChanged(_selectedFilters);
                   },
