@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:job_listings/jobs.dart';
 import 'package:job_listings/models/filter_model.dart';
+import 'package:job_listings/table_control.dart';
 import 'jobs_table.dart';
 import 'filter.dart';
 
@@ -13,6 +14,10 @@ class JobListingsPage extends StatefulWidget {
 
 class _JobListingsPageState extends State<JobListingsPage> {
   late Future<List<Map<String, String>>> _futureJobs;
+  int _rowsPerPage = 25;
+  final List<int> _availableRowsPerPage = [10, 25, 50];
+  int _currentPage = 1;
+  int _totalHits = 13; // Dummy value for total hits
 
   @override
   void initState() {
@@ -20,8 +25,16 @@ class _JobListingsPageState extends State<JobListingsPage> {
     _futureJobs = loadJobs();
   }
 
+  void _handlePageChange(int newPage) {
+    setState(() {
+      _currentPage = newPage;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final double containerWidth = MediaQuery.of(context).size.width > 1100 ? 800.0 : 600.0;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Job Listings'),
@@ -46,7 +59,24 @@ class _JobListingsPageState extends State<JobListingsPage> {
               children: [
                 Flexible(
                   flex: 3,
-                  child: Datatable(jobs: jobs),
+                  child: Column(
+                    children: [
+                      PaginationHeader(
+                        containerWidth: containerWidth,
+                        totalHits: _totalHits,
+                        rowsPerPage: _rowsPerPage,
+                        availableRowsPerPage: _availableRowsPerPage,
+                        onRowsPerPageChanged: (value) {
+                          setState(() {
+                            _rowsPerPage = value!;
+                          });
+                        },
+                        currentPage: _currentPage,
+                        onPageChanged: _handlePageChange,
+                      ),
+                      Datatable(jobs: jobs, containerWidth: containerWidth),
+                    ],
+                  ),
                 ),
                 const SizedBox(width: 30),
                 Flexible(

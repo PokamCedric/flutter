@@ -25,3 +25,9 @@ class PaddedTextCell extends StatelessWidget {
     );
   }
 }
+
+Text columnTitle(Color color, String text) =>
+  Text(text,
+    softWrap: false,
+    overflow: TextOverflow.ellipsis,
+    style: TextStyle(color: color));
