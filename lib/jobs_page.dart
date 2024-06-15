@@ -14,6 +14,8 @@ class JobListingsPage extends StatefulWidget {
 
 class _JobListingsPageState extends State<JobListingsPage> {
   late Future<List<Map<String, String>>> _futureJobs;
+  List<Map<String, String>> _allJobs = [];
+  List<Map<String, String>> _filteredJobs = [];
   int _rowsPerPage = 10;
   final List<int> _availableRowsPerPage = [10, 25, 50];
   int _currentPage = 1;
@@ -23,6 +25,13 @@ class _JobListingsPageState extends State<JobListingsPage> {
   void initState() {
     super.initState();
     _futureJobs = loadJobs();
+    _futureJobs.then((jobs) {
+      setState(() {
+        _allJobs = jobs;
+        _filteredJobs = jobs;
+        _totalHits = jobs.length;
+      });
+    });
   }
 
   void _handlePageChange(int newPage) {
@@ -35,6 +44,32 @@ class _JobListingsPageState extends State<JobListingsPage> {
     setState(() {
       _rowsPerPage = newRowsPerPage!;
       _currentPage = 1; // Reset to first page when rows per page changes
+    });
+  }
+
+  void _handleFilterChange(Map<String, String> filters) {
+    setState(() {
+      _filteredJobs = _allJobs.where((job) {
+        bool matchesSearch = filters['Search'] == null ||
+            filters['Search']!.isEmpty ||
+            job.values.any((value) => value.toLowerCase().contains(filters['Search']!.toLowerCase()));
+
+        bool matchesField = filters['Field'] == null ||
+            filters['Field'] == 'All Fields' ||
+            job['field'] == filters['Field'];
+
+        bool matchesFunction = filters['Type of function'] == null ||
+            filters['Type of function'] == 'All types of function' ||
+            job['type'] == filters['Type of function'];
+
+        bool matchesCountry = filters['Country'] == null ||
+            filters['Country'] == 'All countries' ||
+            job['country'] == filters['Country'];
+
+        return matchesSearch && matchesField && matchesFunction && matchesCountry;
+      }).toList();
+      _totalHits = _filteredJobs.length;
+      _currentPage = 1;
     });
   }
 
@@ -57,7 +92,6 @@ class _JobListingsPageState extends State<JobListingsPage> {
             return const Center(child: Text('No jobs available'));
           }
 
-          final jobs = snapshot.data!;
           final totalPages = (_totalHits / _rowsPerPage).ceil();
 
           return Padding(
@@ -84,7 +118,7 @@ class _JobListingsPageState extends State<JobListingsPage> {
                         ),
                       ),
                       Datatable(
-                        jobs: jobs,
+                        jobs: _filteredJobs,
                         containerWidth: containerWidth,
                         rowsPerPage: _rowsPerPage,
                         currentPage: _currentPage,
@@ -115,6 +149,7 @@ class _JobListingsPageState extends State<JobListingsPage> {
                         'Madagascar'
                       ]),
                     ],
+                    onFilterChanged: _handleFilterChange,
                   ),
                 ),
               ],

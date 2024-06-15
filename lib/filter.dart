@@ -4,15 +4,17 @@ import 'package:job_listings/models/filter_model.dart';
 
 class FilterWidget extends StatefulWidget {
   final List<FilterModel> filters;
+  final ValueChanged<Map<String, String>> onFilterChanged;
 
-  const FilterWidget({super.key, required this.filters});
+  const FilterWidget({super.key, required this.filters, required this.onFilterChanged});
 
   @override
   _FilterWidgetState createState() => _FilterWidgetState();
 }
 
 class _FilterWidgetState extends State<FilterWidget> {
-  bool _isExpanded = false;
+  bool _isExpanded = true;
+  final Map<String, String> _selectedFilters = {};
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +51,7 @@ class _FilterWidgetState extends State<FilterWidget> {
           ),
           const SizedBox(height: 10),
           AnimatedCrossFade(
-            duration: Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 300),
             crossFadeState:
                 _isExpanded ? CrossFadeState.showFirst : CrossFadeState.showSecond,
             firstChild: Column(
@@ -57,11 +59,17 @@ class _FilterWidgetState extends State<FilterWidget> {
               children: [
                 Container(
                   decoration: filterBoxDecoration,
-                  child: const TextField(
-                    decoration: InputDecoration(
+                  child: TextField(
+                    decoration: const InputDecoration(
                       hintText: 'Search',
                       border: InputBorder.none,
                     ),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedFilters['Search'] = value;
+                      });
+                      widget.onFilterChanged(_selectedFilters);
+                    },
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -71,7 +79,12 @@ class _FilterWidgetState extends State<FilterWidget> {
                       items: filter.items,
                       filterWidth: filterWidth,
                       filterBoxDecoration: filterBoxDecoration,
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedFilters[filter.label] = value!;
+                        });
+                        widget.onFilterChanged(_selectedFilters);
+                      },
                     )),
                 const SizedBox(height: 10),
                 SizedBox(
@@ -82,7 +95,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                       foregroundColor: Theme.of(context).indicatorColor, // Text color
                     ),
                     onPressed: () {
-                      // Handle search/filter action
+                      widget.onFilterChanged(_selectedFilters);
                     },
                     child: const Text('Search Jobs'),
                   ),
@@ -90,7 +103,10 @@ class _FilterWidgetState extends State<FilterWidget> {
                 const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () {
-                    // Handle search/filter action
+                    setState(() {
+                      _selectedFilters.clear();
+                    });
+                    widget.onFilterChanged(_selectedFilters);
                   },
                   child: const Text('Reset'),
                 ),

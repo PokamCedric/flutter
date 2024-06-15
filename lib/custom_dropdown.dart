@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class CustomDropdown extends StatelessWidget {
   final String label;
   final List<String> items;
@@ -19,33 +18,21 @@ class CustomDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double horizontalPadding = 10.0;
-
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10.0),
-      child: Container(
-        decoration: filterBoxDecoration,
-        child: DropdownButtonFormField<String>(
-          decoration: InputDecoration(
-            labelText: label,
-            border: InputBorder.none, // Remove the default border
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: horizontalPadding),
-          ),
-          items: items.map((item) => DropdownMenuItem<String>(
-                value: item,
-                child: Container(
-                  width: filterWidth - (60.0 + horizontalPadding),
-                  child: Text(
-                    item,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                ),
-              )).toList(),
-          onChanged: onChanged,
-          style: Theme.of(context).textTheme.bodyLarge,
-        ),
+    return Container(
+      width: filterWidth,
+      padding: const EdgeInsets.all(10.0),
+      decoration: filterBoxDecoration,
+      child: DropdownButton<String>(
+        value: items.first,
+        isExpanded: true,
+        underline: const SizedBox(),
+        items: items.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        onChanged: onChanged,
       ),
     );
   }
