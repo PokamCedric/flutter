@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class PaginationHeader extends StatelessWidget {
+class PaginationControl extends StatelessWidget {
   final int totalHits;
   final int rowsPerPage;
   final List<int> availableRowsPerPage;
@@ -10,7 +10,7 @@ class PaginationHeader extends StatelessWidget {
   final ValueChanged<int> onPageChanged;
   final double containerWidth;
 
-  const PaginationHeader({
+  const PaginationControl({
     required this.totalHits,
     required this.rowsPerPage,
     required this.availableRowsPerPage,
@@ -26,13 +26,14 @@ class PaginationHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: containerWidth,
+      height: 40.0,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text('Page $currentPage of $totalPages'),
           Row(
             children: [
-              const Text('Hits per page:'),
+              const Text('Hits per page: '),
               Container(
                   decoration: BoxDecoration(border:
                   Border.all(color: Theme.of(context).primaryColor )),
@@ -57,7 +58,6 @@ class PaginationHeader extends StatelessWidget {
             width: 120,
             height: 50,
             child: GridView(
-              padding: const EdgeInsets.only(top: 10),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     mainAxisSpacing: 2,
@@ -68,20 +68,23 @@ class PaginationHeader extends StatelessWidget {
                       width: 10,
                       decoration: roundedBox(true),
                       child: IconButton(
-                          icon: Icon(Icons.chevron_left, color: currentPage > 1 ? Colors.black : Colors.grey),
+                          icon: Icon(Icons.chevron_left, color: currentPage > 1 ? Theme.of(context).primaryColor : Colors.grey),
                           onPressed: currentPage > 1 ? () => onPageChanged(currentPage - 1) : null
                           ),
                     ),
                     Container(
                       alignment: Alignment.center,
                       width: 10 ,
-                      color: Colors.blue,
-                      child: Text('$currentPage')
+                      color: Theme.of(context).primaryColor,
+                      child: Text(
+                        '$currentPage',
+                        style: TextStyle(color: Theme.of(context).indicatorColor),
+                      )
                       ),
                     Container(width: 10,
                       decoration: roundedBox(false),
                       child: IconButton(
-                        icon: Icon(Icons.chevron_right, color: currentPage < totalPages ? Colors.black : Colors.grey),
+                        icon: Icon(Icons.chevron_right, color: currentPage < totalPages ? Theme.of(context).primaryColor : Colors.grey),
                         onPressed: currentPage < totalPages ? () => onPageChanged(currentPage + 1) : null,
                       )
                       )

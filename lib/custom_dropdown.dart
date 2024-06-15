@@ -21,7 +21,7 @@ class CustomDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10.0),
+      padding: const EdgeInsets.only(bottom: 20.0),
       child: Container(
         width: filterWidth,
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -33,7 +33,10 @@ class CustomDropdown extends StatelessWidget {
           items: items.map((String value) {
             return DropdownMenuItem<String>(
               value: value,
-              child: Text(value),
+              child: Text(
+                value,
+              style: Theme.of(context).textTheme.bodyLarge,
+              ),
             );
           }).toList(),
           onChanged: onChanged,

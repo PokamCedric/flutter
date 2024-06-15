@@ -146,6 +146,7 @@ class CollectionTheme {
       textTheme: const TextTheme(
         bodyLarge: TextStyle(fontSize: 12.0), // Set default font size
         bodyMedium: TextStyle(fontSize: 12.0), // Set default font size
+        titleMedium: TextStyle(fontWeight: FontWeight.bold)
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: colorScheme.surface,
