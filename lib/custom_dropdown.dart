@@ -20,28 +20,33 @@ class CustomDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
-      child: Container(
-        width: filterWidth,
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        decoration: filterBoxDecoration,
-        child: DropdownButton<String>(
-          value: value, // Use the private value
-          isExpanded: true,
-          underline: const SizedBox(),
-          items: items.map((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(
-                value,
-              style: Theme.of(context).textTheme.bodyLarge,
-              ),
-            );
-          }).toList(),
-          onChanged: onChanged,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label),
+        const SizedBox(height: 6.0),
+        Container(
+          width: filterWidth,
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          decoration: filterBoxDecoration,
+          child: DropdownButton<String>(
+            value: value, // Use the private value
+            isExpanded: true,
+            underline: const SizedBox(),
+            items: items.map((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(
+                  value,
+                style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              );
+            }).toList(),
+            onChanged: onChanged,
+          ),
         ),
-      ),
+        const SizedBox(height: 16.0),
+      ],
     );
   }
 }

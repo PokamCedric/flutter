@@ -35,8 +35,8 @@ class PaginationControl extends StatelessWidget {
             children: [
               const Text('Hits per page: '),
               Container(
-                  decoration: BoxDecoration(border:
-                  Border.all(color: Theme.of(context).primaryColor )),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey )),
                 child: DropdownButton<int>(
                   value: rowsPerPage,
                   alignment: AlignmentDirectional.centerStart,
@@ -75,7 +75,10 @@ class PaginationControl extends StatelessWidget {
                     Container(
                       alignment: Alignment.center,
                       width: 10 ,
+                      decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor,
+                      border: const Border.symmetric(horizontal: BorderSide(color: Colors.grey,))),
+
                       child: Text(
                         '$currentPage',
                         style: TextStyle(color: Theme.of(context).indicatorColor),
@@ -101,7 +104,7 @@ class PaginationControl extends StatelessWidget {
     final  double right = isLeft? 0 : 20.0;
     return BoxDecoration(
                       color: Colors.white,
-                      border: Border.all(color: Colors.green),
+                      border: Border.all(color: Colors.grey),
                       borderRadius:
                       BorderRadius.only(
                         topLeft: Radius.circular(left),

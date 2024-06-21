@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:job_listings/custom_dropdown.dart';
 import 'package:job_listings/models/filter_model.dart';
 
-class FilterWidget extends StatefulWidget {
+class Filter extends StatefulWidget {
   final List<FilterModel> filters;
   final int length;
   final ValueChanged<Map<String, String>> onFilterChanged;
 
-  const FilterWidget({
+  const Filter({
     super.key,
     required this.filters,
     required this.onFilterChanged,
@@ -17,7 +17,7 @@ class FilterWidget extends StatefulWidget {
   _FilterWidgetState createState() => _FilterWidgetState();
 }
 
-class _FilterWidgetState extends State<FilterWidget> {
+class _FilterWidgetState extends State<Filter> {
   bool _isExpanded = true;
   final Map<String, String> _selectedFilters = {};
 

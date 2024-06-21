@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:job_listings/jobs.dart';
+import 'package:job_listings/jobs_table.dart';
 import 'package:job_listings/models/filter_model.dart';
-import 'package:job_listings/table_control.dart';
-import 'jobs_table.dart';
-import 'filter.dart';
+import 'data_table_widget.dart';
+import 'filter_widget.dart';
 
 class JobListingsPage extends StatefulWidget {
   const JobListingsPage({super.key});
@@ -96,77 +96,75 @@ class _JobListingsPageState extends State<JobListingsPage> {
           final totalPages = (_totalHits / _rowsPerPage).ceil();
 
           return SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 50.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Flexible(
-                    flex: 3,
-                    child: Column(
-                      children: [
-                        paginationControl(totalPages, containerWidth),
-                        Datatable(
-                          jobs: _filteredJobs,
-                          containerWidth: containerWidth,
-                          rowsPerPage: _rowsPerPage,
-                          currentPage: _currentPage,
-                        ),
-                        paginationControl(totalPages, containerWidth)
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 50), // space between table and filter
-                  Flexible(
-                    flex: 1,
-                    child: FilterWidget(
-                      length: _filteredJobs.length,
-                      filters: [
-                        FilterModel('Field', [
-                          'All Fields',
-                          'Food security, agriculture',
-                          'Peace-building and crisis prevention',
-                          'Infrastructure, ICT'
-                        ]),
-                        FilterModel('Type of function', [
-                          'All types of function',
-                          'Integrated Expert'
-                        ]),
-                        FilterModel('Country', [
-                          'All countries',
-                          'Kenya',
-                          'Sri Lanka',
-                          'Benin',
-                          'Madagascar'
-                        ]),
-                      ],
-                      onFilterChanged: _handleFilterChange,
-                    ),
-                  ),
-
-                ],
-              ),
-            ),
+            padding: const EdgeInsets.only(top: 50.0),
+            child: desktopView(totalPages, containerWidth),
           );
         },
       ),
     );
   }
 
-  Widget paginationControl(int totalPages, double containerWidth) {
-    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10.0),
-                      child: PaginationControl(
-                        totalPages: totalPages,
-                        containerWidth: containerWidth,
-                        totalHits: _totalHits,
-                        rowsPerPage: _rowsPerPage,
-                        availableRowsPerPage: _availableRowsPerPage,
-                        onRowsPerPageChanged: _handleRowsPerPageChange,
-                        currentPage: _currentPage,
-                        onPageChanged: _handlePageChange,
-                      ),
-                    );
+  Widget desktopView(int totalPages, double containerWidth) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Flexible(
+          flex: 3,
+          child: DataTableWidget(
+            jobs: _filteredJobs,
+            containerWidth: containerWidth,
+            rowsPerPage: _rowsPerPage,
+            currentPage: _currentPage,
+            totalPages: totalPages,
+            totalHits: _totalHits,
+            availableRowsPerPage: _availableRowsPerPage,
+            onPageChanged: _handlePageChange,
+            onRowsPerPageChanged: _handleRowsPerPageChange,
+            columns: getTableColumns(),
+          ),
+        ),
+        const SizedBox(width: 50), // space between table and filter
+        Flexible(
+          flex: 1,
+          child: FilterWidget(
+            length: _filteredJobs.length,
+            filters: getFilterModels(),
+            onFilterChanged: _handleFilterChange,
+          ),
+        ),
+      ],
+    );
+  }
+
+  List<ColumnConfig> getTableColumns() {
+    return [
+      ColumnConfig(label: 'Job Title', propertyName: 'title', isVisible: true),
+      ColumnConfig(label: 'Type of Function', propertyName: 'type', isVisible: true),
+      ColumnConfig(label: 'Country', propertyName: 'country', isVisible: true),
+      ColumnConfig(label: 'Field', propertyName: 'field', isVisible: true),
+    ];
+  }
+
+  List<FilterModel> getFilterModels() {
+    return [
+      FilterModel('Field', [
+        'All Fields',
+        'Food security, agriculture',
+        'Peace-building and crisis prevention',
+        'Infrastructure, ICT'
+      ]),
+      FilterModel('Type of function', [
+        'All types of function',
+        'Integrated Expert'
+      ]),
+      FilterModel('Country', [
+        'All countries',
+        'Kenya',
+        'Sri Lanka',
+        'Benin',
+        'Madagascar'
+      ]),
+    ];
   }
 }

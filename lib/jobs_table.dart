@@ -6,6 +6,7 @@ class Datatable extends StatelessWidget {
   final double containerWidth;
   final int rowsPerPage;
   final int currentPage;
+  final List<ColumnConfig> columns; // List of column configurations
 
   const Datatable({
     super.key,
@@ -13,6 +14,7 @@ class Datatable extends StatelessWidget {
     required this.containerWidth,
     required this.rowsPerPage,
     required this.currentPage,
+    required this.columns, // Added list of columns
   });
 
   @override
@@ -20,42 +22,54 @@ class Datatable extends StatelessWidget {
     final double tableWidth = containerWidth - 200.0;
     final Color titleColor = Theme.of(context).primaryColor;
 
-    final displayedJobs = jobs.skip((currentPage - 1) * rowsPerPage).take(rowsPerPage).toList();
+    final displayedJobs =
+        jobs.skip((currentPage - 1) * rowsPerPage).take(rowsPerPage).toList();
+
+    // Filter visible columns based on isVisible flag
+    List<DataColumn> visibleColumns = columns
+        .where((column) => column.isVisible)
+        .map((column) => DataColumn(label: columnTitle(titleColor, column.label)))
+        .toList();
 
     return SizedBox(
       width: containerWidth,
       child: DataTable(
-        columns:  [
-          DataColumn(label: columnTitle(titleColor, 'Job Title')),
-          DataColumn(label: columnTitle(titleColor, 'Type of function')),
-          DataColumn(label: columnTitle(titleColor, 'Country')),
-          DataColumn(label: columnTitle(titleColor, 'Field')),
-        ],
+        columns: visibleColumns,
         rows: displayedJobs
             .map(
               (job) => DataRow(
-                cells: [
-                DataCell(PaddedTextCell(
-                  color: Theme.of(context).colorScheme.secondary,
-                  text: job['title'] ?? "",
-                  width: tableWidth * (2/6),
-                )),
-                DataCell(PaddedTextCell(
-                  text: job['type'] ?? "",
-                  width: tableWidth * (1/6),
-                )),
-                DataCell(PaddedTextCell(
-                  text: job['country'] ?? "",
-                  width: tableWidth * (1/6),
-                )),
-                DataCell(PaddedTextCell(
-                  text: job['field'] ?? "",
-                  width: tableWidth * (2/6),
-                )),
-              ]),
+                cells: columns
+                    .where((column) => column.isVisible)
+                    .map((column) => DataCell(PaddedTextCell(
+                          text: job[column.propertyName] ?? "",
+                          width: tableWidth * (1 / visibleColumns.length),
+                        )))
+                    .toList(),
+              ),
             )
             .toList(),
       ),
     );
   }
+}
+
+// Model class to represent a column configuration
+class ColumnConfig {
+  final String label;
+  final String propertyName; // Property name in the job map
+  final bool isVisible; // Visibility flag
+
+  ColumnConfig({
+    required this.label,
+    required this.propertyName,
+    this.isVisible = true, // Default visibility to true
+  });
+}
+
+// Helper function to create column titles with specified color
+Widget columnTitle(Color color, String title) {
+  return Text(
+    title,
+    style: TextStyle(color: color, fontWeight: FontWeight.bold),
+  );
 }
