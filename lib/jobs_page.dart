@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:job_listings/jobs.dart';
-import 'package:job_listings/jobs_table.dart';
+import 'package:job_listings/utils/data_table/data_table.dart';
 import 'package:job_listings/models/filter_model.dart';
-import 'data_table_widget.dart';
-import 'filter_widget.dart';
+import 'utils/data_table/data_table_widget.dart';
+import 'utils/filter/filter_widget.dart';
 
 class JobListingsPage extends StatefulWidget {
   const JobListingsPage({super.key});
@@ -112,7 +112,7 @@ class _JobListingsPageState extends State<JobListingsPage> {
         Flexible(
           flex: 3,
           child: DataTableWidget(
-            jobs: _filteredJobs,
+            data: _filteredJobs,
             containerWidth: containerWidth,
             rowsPerPage: _rowsPerPage,
             currentPage: _currentPage,

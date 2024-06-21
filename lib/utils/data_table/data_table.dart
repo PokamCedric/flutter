@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:job_listings/text_cell.dart';
+import 'package:job_listings/utils/data_table/text_cell.dart';
 
 class Datatable extends StatelessWidget {
-  final List<Map<String, String>> jobs;
+  final List<Map<String, String>> data;
   final double containerWidth;
   final int rowsPerPage;
   final int currentPage;
@@ -10,7 +10,7 @@ class Datatable extends StatelessWidget {
 
   const Datatable({
     super.key,
-    required this.jobs,
+    required this.data,
     required this.containerWidth,
     required this.rowsPerPage,
     required this.currentPage,
@@ -23,7 +23,7 @@ class Datatable extends StatelessWidget {
     final Color titleColor = Theme.of(context).primaryColor;
 
     final displayedJobs =
-        jobs.skip((currentPage - 1) * rowsPerPage).take(rowsPerPage).toList();
+        data.skip((currentPage - 1) * rowsPerPage).take(rowsPerPage).toList();
 
     // Filter visible columns based on isVisible flag
     List<DataColumn> visibleColumns = columns

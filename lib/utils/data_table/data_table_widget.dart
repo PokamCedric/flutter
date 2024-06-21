@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:job_listings/table_control.dart';
-import 'jobs_table.dart';
+import 'package:job_listings/utils/pagination/table_control.dart';
+import 'data_table.dart';
 
 class DataTableWidget extends StatelessWidget {
-  final List<Map<String, String>> jobs;
+  final List<Map<String, String>> data;
   final double containerWidth;
   final int rowsPerPage;
   final int currentPage;
@@ -16,7 +16,7 @@ class DataTableWidget extends StatelessWidget {
 
   const DataTableWidget({
     super.key,
-    required this.jobs,
+    required this.data,
     required this.containerWidth,
     required this.rowsPerPage,
     required this.currentPage,
@@ -34,7 +34,7 @@ class DataTableWidget extends StatelessWidget {
       children: [
         paginationControl(),
         Datatable(
-          jobs: jobs,
+          data: data,
           containerWidth: containerWidth,
           rowsPerPage: rowsPerPage,
           currentPage: currentPage,

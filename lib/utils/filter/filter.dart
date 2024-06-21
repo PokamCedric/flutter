@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:job_listings/custom_dropdown.dart';
+import 'package:job_listings/utils/filter/custom_dropdown.dart';
 import 'package:job_listings/models/filter_model.dart';
 
 class Filter extends StatefulWidget {
@@ -118,7 +118,7 @@ class _FilterWidgetState extends State<Filter> {
                       onPressed: () {
                         widget.onFilterChanged(_selectedFilters);
                       },
-                      child: Text('${widget.length} Jobs'),
+                      child: Text('${widget.length} found'),
                     ),
                   ),
                   const SizedBox(height: 10),
