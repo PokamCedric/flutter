@@ -1,6 +1,7 @@
 // job_listings_page.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:job_listings/bloc/data_table/data_table_bloc.dart';
 import 'package:job_listings/bloc/job/job_bloc.dart';
 import 'package:job_listings/models/filter_model.dart';
 import 'package:job_listings/utils/data_table/data_table.dart';
@@ -9,14 +10,15 @@ import 'package:job_listings/utils/filter/filter_widget.dart';
 import 'package:job_listings/bloc/filter/filter_bloc.dart';
 
 class JobListingsPage extends StatelessWidget {
-  const JobListingsPage({super.key});
+  const JobListingsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => JobListingsBloc()..add(LoadJobsEvent())),
-        BlocProvider(create: (context) => FilterBloc())
+        BlocProvider(create: (context) => FilterBloc()),
+        BlocProvider(create: (context) => DataTableBloc()), // Provide DataTableBloc
       ],
       child: const JobListingsView(),
     );
@@ -24,7 +26,7 @@ class JobListingsPage extends StatelessWidget {
 }
 
 class JobListingsView extends StatelessWidget {
-  const JobListingsView({super.key});
+  const JobListingsView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,11 +45,15 @@ class JobListingsView extends StatelessWidget {
 
           return BlocBuilder<FilterBloc, FilterState>(
             builder: (context, filterState) {
-              final totalPages = (state.totalHits / filterState.rowsPerPage).ceil();
+              return BlocBuilder<DataTableBloc, DataTableState>(
+                builder: (context, dataTableState) {
+                  final totalPages = (state.totalHits / dataTableState.rowsPerPage).ceil();
 
-              return SingleChildScrollView(
-                padding: const EdgeInsets.only(top: 50.0),
-                child: desktopView(context, totalPages, containerWidth, state, filterState),
+                  return SingleChildScrollView(
+                    padding: const EdgeInsets.only(top: 50.0),
+                    child: desktopView(context, totalPages, containerWidth, state, filterState, dataTableState),
+                  );
+                },
               );
             },
           );
@@ -56,7 +62,7 @@ class JobListingsView extends StatelessWidget {
     );
   }
 
-  Widget desktopView(BuildContext context, int totalPages, double containerWidth, JobListingsState state, FilterState filterState) {
+  Widget desktopView(BuildContext context, int totalPages, double containerWidth, JobListingsState state, FilterState filterState, DataTableState dataTableState) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,13 +72,13 @@ class JobListingsView extends StatelessWidget {
           child: DataTableWidget(
             data: state.filteredJobs,
             containerWidth: containerWidth,
-            rowsPerPage: filterState.rowsPerPage,
-            currentPage: filterState.currentPage,
+            rowsPerPage: dataTableState.rowsPerPage,
+            currentPage: dataTableState.currentPage,
             totalPages: totalPages,
             totalHits: state.totalHits,
             availableRowsPerPage: const [5, 10, 25, 50],
-            onPageChanged: (newPage) => context.read<FilterBloc>().add(ChangePageEvent(newPage)),
-            onRowsPerPageChanged: (newRowsPerPage) => context.read<FilterBloc>().add(ChangeRowsPerPageEvent(newRowsPerPage!)),
+            onPageChanged: (newPage) => context.read<DataTableBloc>().add(ChangePageEvent(newPage)),
+            onRowsPerPageChanged: (newRowsPerPage) => context.read<DataTableBloc>().add(ChangeRowsPerPageEvent(newRowsPerPage!)),
             columns: getTableColumns(),
           ),
         ),

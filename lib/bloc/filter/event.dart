@@ -15,21 +15,3 @@ class ChangeFilterEvent extends FilterEvent {
   @override
   List<Object> get props => [filters];
 }
-
-class ChangePageEvent extends FilterEvent {
-  final int newPage;
-
-  const ChangePageEvent(this.newPage);
-
-  @override
-  List<Object> get props => [newPage];
-}
-
-class ChangeRowsPerPageEvent extends FilterEvent {
-  final int newRowsPerPage;
-
-  const ChangeRowsPerPageEvent(this.newRowsPerPage);
-
-  @override
-  List<Object> get props => [newRowsPerPage];
-}
