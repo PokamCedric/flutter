@@ -17,21 +17,3 @@ class FilterJobsEvent extends JobListingsEvent {
   @override
   List<Object> get props => [filters];
 }
-
-class ChangePageEvent extends JobListingsEvent {
-  final int newPage;
-
-  const ChangePageEvent(this.newPage);
-
-  @override
-  List<Object> get props => [newPage];
-}
-
-class ChangeRowsPerPageEvent extends JobListingsEvent {
-  final int newRowsPerPage;
-
-  const ChangeRowsPerPageEvent(this.newRowsPerPage);
-
-  @override
-  List<Object> get props => [newRowsPerPage];
-}

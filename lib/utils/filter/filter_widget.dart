@@ -1,11 +1,14 @@
+// filter_widget.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:job_listings/bloc/filter/filter_bloc.dart';
 import 'package:job_listings/models/filter_model.dart';
 import 'filter.dart';
 
 class FilterWidget extends StatelessWidget {
   final int length;
   final List<FilterModel> filters;
-  final ValueChanged<Map<String, String>> onFilterChanged;
+  final Function(Map<String, String>) onFilterChanged;
 
   const FilterWidget({
     super.key,
@@ -16,10 +19,13 @@ class FilterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Filter(
-      length: length,
-      filters: filters,
-      onFilterChanged: onFilterChanged,
+    return BlocProvider(
+      create: (context) => FilterBloc(),
+      child: Filter(
+        length: length,
+        filters: filters,
+        onFilterChanged: onFilterChanged,
+      ),
     );
   }
 }

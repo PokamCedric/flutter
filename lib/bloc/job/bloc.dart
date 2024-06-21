@@ -7,8 +7,6 @@ class JobListingsBloc extends Bloc<JobListingsEvent, JobListingsState> {
   JobListingsBloc() : super(const JobListingsState()) {
     on<LoadJobsEvent>(_onLoadJobs);
     on<FilterJobsEvent>(_onFilterJobs);
-    on<ChangePageEvent>(_onChangePage);
-    on<ChangeRowsPerPageEvent>(_onChangeRowsPerPage);
   }
 
   Future<void> _onLoadJobs(LoadJobsEvent event, Emitter<JobListingsState> emit) async {
@@ -46,13 +44,5 @@ class JobListingsBloc extends Bloc<JobListingsEvent, JobListingsState> {
       totalHits: filteredJobs.length,
       currentPage: 1,
     ));
-  }
-
-  void _onChangePage(ChangePageEvent event, Emitter<JobListingsState> emit) {
-    emit(state.copyWith(currentPage: event.newPage));
-  }
-
-  void _onChangeRowsPerPage(ChangeRowsPerPageEvent event, Emitter<JobListingsState> emit) {
-    emit(state.copyWith(rowsPerPage: event.newRowsPerPage, currentPage: 1));
   }
 }
