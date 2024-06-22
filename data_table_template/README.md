@@ -53,6 +53,9 @@ The **Responsive Data Table** project is a meticulously crafted template designe
 ### Conclusion
 The **Responsive Data Table with Customizable Filters and Pagination** template is an amazing solution for anyone looking to present large datasets in a clean, organized, and user-friendly manner. With its powerful features and responsive design, this template ensures that your data is always accessible and easy to navigate, regardless of the device or screen size. Elevate your data presentation and user experience with this versatile and robust data table solution.
 
+### Inspiration Source
+This project was inspired by the job listings page from [CIM Online](https://jobs.cimonline.de/index.php?ac=search_result).
+
 ## Views
 ### Desktop
 ![desktop-view](assets/readme/desktop-view.png)
