@@ -1,5 +1,12 @@
 ## Responsive Data Table with Customizable Filters and Pagination
+
+To run this project, use the following command:
+```sh
+flutter run -d chrome
+```
+
 ![desktop-view](assets/readme/desktop-view.png)
+
 ### Overview
 The **Responsive Data Table** project is a meticulously crafted template designed to cater to modern data presentation needs. This template provides a comprehensive, user-friendly, and visually appealing solution for displaying large datasets with features such as customizable filtering, pagination, and responsive design. Perfect for web applications, dashboards, and any data-intensive environment, this template ensures seamless data interaction and presentation across all devices.
 
