@@ -6,8 +6,8 @@ class Filter extends StatefulWidget {
   final List<DropdownFilterModel> filters;
   final int totalItems;
   final double filterWidth;
+  final int filtersPerLine;
   final ValueChanged<Map<String, dynamic>> onFilterChanged;
-  final int filtersPerLine; // Add this parameter
 
   const Filter({
     super.key,
@@ -15,7 +15,7 @@ class Filter extends StatefulWidget {
     required this.onFilterChanged,
     required this.totalItems,
     required this.filterWidth,
-    this.filtersPerLine = 1, // Default to 1 filter per line
+    this.filtersPerLine = 1,
   });
 
   @override

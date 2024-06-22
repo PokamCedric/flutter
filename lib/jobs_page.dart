@@ -31,7 +31,20 @@ class JobListingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaWidth = MediaQuery.of(context).size.width;
-    final bool isDesktop = mediaWidth > 1100.0;
+    int filtersPerLine = 1;
+    bool isDesktop;
+
+    if(mediaWidth > 1100.0) {
+      isDesktop = true;
+      filtersPerLine = 1;
+    }else if( mediaWidth > 700.0){
+      isDesktop = false;
+      filtersPerLine = 2;
+    }else{
+      isDesktop = false;
+      filtersPerLine = 1;
+    }
+
     final double containerWidth = isDesktop ? 800.0 : mediaWidth;
     final double filterWidth = isDesktop ? 250.0 : mediaWidth - 50.0;
 
@@ -71,6 +84,7 @@ class JobListingsView extends StatelessWidget {
                             state,
                             filterState,
                             dataTableState,
+                            filtersPerLine: filtersPerLine
                           ),
                   );
                 },
@@ -86,10 +100,12 @@ class JobListingsView extends StatelessWidget {
     JobListingsState state,
     double filterWidth,
     BuildContext context,
+    {int filtersPerLine = 1}
   ) {
     return FilterWidget(
       totalItems: state.filteredJobs.length,
       filterWidth: filterWidth,
+      filtersPerLine: filtersPerLine,
       filters: getDropdownFilterModels(),
       onFilterChanged: (filters) =>
           context.read<JobListingsBloc>().add(FilterJobsEvent(FilterModel.fromJson(filters))),
@@ -155,6 +171,7 @@ class JobListingsView extends StatelessWidget {
     JobListingsState state,
     FilterState filterState,
     DataTableState dataTableState,
+    {int filtersPerLine = 1}
   ) {
     return Container(
       alignment: Alignment.center,
@@ -162,7 +179,7 @@ class JobListingsView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          buildFilterWidget(state, mediaWidth, context),
+          buildFilterWidget(state, mediaWidth, context, filtersPerLine: filtersPerLine),
           const SizedBox(height: 50), // space between table and filter
           buildDataTableWidget(state, mediaWidth, dataTableState, totalPages, context),
         ],
