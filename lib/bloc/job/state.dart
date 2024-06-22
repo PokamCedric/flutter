@@ -1,8 +1,9 @@
 import 'package:equatable/equatable.dart';
+import 'package:job_listings/models/job_model.dart';
 
 class JobListingsState extends Equatable {
-  final List<Map<String, String>> allJobs;
-  final List<Map<String, String>> filteredJobs;
+  final List<JobModel> allJobs;
+  final List<JobModel> filteredJobs;
   final int totalHits;
 
   const JobListingsState({
@@ -12,8 +13,8 @@ class JobListingsState extends Equatable {
   });
 
   JobListingsState copyWith({
-    List<Map<String, String>>? allJobs,
-    List<Map<String, String>>? filteredJobs,
+    List<JobModel>? allJobs,
+    List<JobModel>? filteredJobs,
     int? rowsPerPage,
     int? currentPage,
     int? totalHits,

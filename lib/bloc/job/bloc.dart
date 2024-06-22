@@ -20,25 +20,26 @@ class JobListingsBloc extends Bloc<JobListingsEvent, JobListingsState> {
 
   void _onFilterJobs(FilterJobsEvent event, Emitter<JobListingsState> emit) {
     final filteredJobs = state.allJobs.where((job) {
-      final filters = event.filters;
-      bool matchesSearch = filters['Search'] == null ||
-          filters['Search']!.isEmpty ||
-          job.values.any((value) => value.toLowerCase().contains(filters['Search']!.toLowerCase()));
+      final filter = event.filter;
+      bool matchesSearch = filter.query== null ||
+          filter.query!.isEmpty ||
+          job.title.toLowerCase().contains(filter.query!.toLowerCase()) ||
+          job.type.toLowerCase().contains(filter.query!.toLowerCase()) ||
+          job.country.toLowerCase().contains(filter.query!.toLowerCase()) ||
+          job.field.toLowerCase().contains(filter.query!.toLowerCase());
 
-      bool matchesField = filters['Field'] == null ||
-          filters['Field'] == 'All Fields' ||
-          job['field'] == filters['Field'];
+      bool matchesField = filter.field == 'All Fields' ||
+          job.field == filter.field;
 
-      bool matchesFunction = filters['Type of function'] == null ||
-          filters['Type of function'] == 'All types of function' ||
-          job['type'] == filters['Type of function'];
+      bool matchesFunction = filter.type == 'All types of function' ||
+          job.type == filter.type;
 
-      bool matchesCountry = filters['Country'] == null ||
-          filters['Country'] == 'All countries' ||
-          job['country'] == filters['Country'];
+      bool matchesCountry = filter.country== 'All countries' ||
+          job.country== filter.country;
 
       return matchesSearch && matchesField && matchesFunction && matchesCountry;
     }).toList();
+
     emit(state.copyWith(
       filteredJobs: filteredJobs,
       totalHits: filteredJobs.length,

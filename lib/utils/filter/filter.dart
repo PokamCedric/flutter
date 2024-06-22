@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:job_listings/utils/filter/custom_dropdown.dart';
-import 'package:job_listings/models/filter_model.dart';
+import 'package:job_listings/models/dropdown_filter_model.dart';
 
 class Filter extends StatefulWidget {
-  final List<FilterModel> filters;
+  final List<DropdownFilterModel> filters;
   final int length;
-  final ValueChanged<Map<String, String>> onFilterChanged;
+  final ValueChanged<Map<String, dynamic>> onFilterChanged;
 
   const Filter({
     super.key,
@@ -27,7 +27,7 @@ class _FilterWidgetState extends State<Filter> {
     // Initialize _selectedFilters with the first item of each filter's items list
     for (var filter in widget.filters) {
       if (filter.items.isNotEmpty) {
-        _selectedFilters[filter.label] = filter.items.first;
+        _selectedFilters[filter.propertyName] = filter.items.first;
       }
     }
   }
@@ -86,7 +86,7 @@ class _FilterWidgetState extends State<Filter> {
                       ),
                       onChanged: (value) {
                         setState(() {
-                          _selectedFilters['Search'] = value;
+                          _selectedFilters['query'] = value;
                         });
                         widget.onFilterChanged(_selectedFilters);
                       },
@@ -95,14 +95,14 @@ class _FilterWidgetState extends State<Filter> {
                   const SizedBox(height: 20.0),
                   // Dynamically create CustomDropdown widgets based on filters
                   ...widget.filters.map((filter) => CustomDropdown(
-                        label: filter.label,
+                        label: filter.propertyName,
                         items: filter.items,
-                        value: _selectedFilters[filter.label]!, // Ensure this line reflects the selected filter value
+                        value: _selectedFilters[filter.propertyName]!, // Ensure this line reflects the selected filter value
                         filterWidth: filterWidth,
                         filterBoxDecoration: filterBoxDecoration(),
                         onChanged: (value) {
                           setState(() {
-                            _selectedFilters[filter.label] = value!;
+                            _selectedFilters[filter.propertyName] = value!;
                           });
                           widget.onFilterChanged(_selectedFilters);
                         },
@@ -129,7 +129,7 @@ class _FilterWidgetState extends State<Filter> {
                         // Reinitialize with the first item of each filter's items list
                         for (var filter in widget.filters) {
                           if (filter.items.isNotEmpty) {
-                            _selectedFilters[filter.label] = filter.items.first;
+                            _selectedFilters[filter.propertyName] = filter.items.first;
                           }
                         }
                       });

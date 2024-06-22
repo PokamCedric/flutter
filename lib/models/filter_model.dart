@@ -1,29 +1,39 @@
+// filter_model.dart
+import 'package:job_listings/models/job_model.dart';
 
-class FilterModel {
-  final String label;
-  final List<String> items;
+class FilterModel extends JobModel {
+  String? query;
 
-  FilterModel(this.label, this.items);
-}
+  FilterModel({
+    required super.type,
+    required super.country,
+    required super.field,
+    this.query,
+  }): super(title: '');
 
-List<FilterModel> getFilterModels() {
-  return [
-    FilterModel('Field', [
-      'All Fields',
-      'Food security, agriculture',
-      'Peace-building and crisis prevention',
-      'Infrastructure, ICT'
-    ]),
-    FilterModel('Type of function', [
-      'All types of function',
-      'Integrated Expert'
-    ]),
-    FilterModel('Country', [
-      'All countries',
-      'Kenya',
-      'Sri Lanka',
-      'Benin',
-      'Madagascar'
-    ]),
-  ];
+  factory FilterModel.fromJson(Map<String, dynamic> json) {
+    return FilterModel(
+      type: json['type'] as String,
+      country: json['country'] as String,
+      field: json['field'] as String,
+      query: json['query'] as String?,
+    );
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = super.toJson();
+    data['query'] = query;
+    return data;
+  }
+
+  // Default instance method
+  factory FilterModel.defaultInstance() {
+    return FilterModel(
+      type: 'All types of function',
+      country: 'All countries',
+      field: 'All Fields',
+      query: '',
+    );
+  }
 }

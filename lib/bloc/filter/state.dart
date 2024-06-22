@@ -1,20 +1,21 @@
 import 'package:equatable/equatable.dart';
+import 'package:job_listings/models/filter_model.dart';
 
 class FilterState extends Equatable {
-  final Map<String, String> filters;
+  final FilterModel filter;
 
   const FilterState({
-    required this.filters,
+    required this.filter,
   });
 
   FilterState copyWith({
-    Map<String, String>? filters,
+    FilterModel? filter,
   }) {
     return FilterState(
-      filters: filters ?? this.filters,
+      filter: filter ?? this.filter,
     );
   }
 
   @override
-  List<Object> get props => [filters];
+  List<Object> get props => [filter];
 }

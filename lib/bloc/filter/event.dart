@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:job_listings/models/filter_model.dart';
 
 abstract class FilterEvent extends Equatable {
   const FilterEvent();
@@ -8,7 +9,7 @@ abstract class FilterEvent extends Equatable {
 }
 
 class ChangeFilterEvent extends FilterEvent {
-  final Map<String, String> filters;
+  final FilterModel filters;
 
   const ChangeFilterEvent(this.filters);
 

@@ -3,7 +3,7 @@ import 'package:job_listings/utils/pagination/table_control.dart';
 import 'data_table.dart';
 
 class DataTableWidget extends StatelessWidget {
-  final List<Map<String, String>> data;
+  final List<Map<String, dynamic>> data;
   final double containerWidth;
   final int rowsPerPage;
   final int currentPage;

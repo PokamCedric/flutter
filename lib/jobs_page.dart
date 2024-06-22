@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:job_listings/bloc/data_table/data_table_bloc.dart';
 import 'package:job_listings/bloc/job/job_bloc.dart';
+import 'package:job_listings/models/dropdown_filter_model.dart';
 import 'package:job_listings/models/filter_model.dart';
 import 'package:job_listings/utils/data_table/data_table.dart';
 import 'package:job_listings/utils/data_table/data_table_widget.dart';
@@ -10,7 +11,7 @@ import 'package:job_listings/utils/filter/filter_widget.dart';
 import 'package:job_listings/bloc/filter/filter_bloc.dart';
 
 class JobListingsPage extends StatelessWidget {
-  const JobListingsPage({Key? key}) : super(key: key);
+  const JobListingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +63,14 @@ class JobListingsView extends StatelessWidget {
     );
   }
 
-  Widget desktopView(BuildContext context, int totalPages, double containerWidth, JobListingsState state, FilterState filterState, DataTableState dataTableState) {
+  Widget desktopView(
+    BuildContext context,
+    int totalPages,
+    double containerWidth,
+    JobListingsState state,
+    FilterState filterState,
+    DataTableState dataTableState) {
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,15 +78,17 @@ class JobListingsView extends StatelessWidget {
         Flexible(
           flex: 3,
           child: DataTableWidget(
-            data: state.filteredJobs,
+            data: state.filteredJobs.map((job) => job.toJson()).toList(),
             containerWidth: containerWidth,
             rowsPerPage: dataTableState.rowsPerPage,
             currentPage: dataTableState.currentPage,
             totalPages: totalPages,
             totalHits: state.totalHits,
             availableRowsPerPage: const [5, 10, 25, 50],
-            onPageChanged: (newPage) => context.read<DataTableBloc>().add(ChangePageEvent(newPage)),
-            onRowsPerPageChanged: (newRowsPerPage) => context.read<DataTableBloc>().add(ChangeRowsPerPageEvent(newRowsPerPage!)),
+            onPageChanged: (newPage) =>
+            context.read<DataTableBloc>().add(ChangePageEvent(newPage)),
+            onRowsPerPageChanged: (newRowsPerPage) =>
+            context.read<DataTableBloc>().add(ChangeRowsPerPageEvent(newRowsPerPage!)),
             columns: getTableColumns(),
           ),
         ),
@@ -87,8 +97,9 @@ class JobListingsView extends StatelessWidget {
           flex: 1,
           child: FilterWidget(
             length: state.filteredJobs.length,
-            filters: getFilterModels(),
-            onFilterChanged: (filters) => context.read<JobListingsBloc>().add(FilterJobsEvent(filters)),
+            filters: getDropdownFilterModels(),
+            onFilterChanged: (filters) =>
+              context.read<JobListingsBloc>().add(FilterJobsEvent(FilterModel.fromJson(filters))),
           ),
         ),
       ],

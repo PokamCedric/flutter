@@ -2,13 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:job_listings/bloc/filter/filter_bloc.dart';
-import 'package:job_listings/models/filter_model.dart';
+import 'package:job_listings/models/dropdown_filter_model.dart';
 import 'filter.dart';
 
 class FilterWidget extends StatelessWidget {
   final int length;
-  final List<FilterModel> filters;
-  final Function(Map<String, String>) onFilterChanged;
+  final List<DropdownFilterModel> filters;
+  final Function(Map<String, dynamic>) onFilterChanged;
 
   const FilterWidget({
     super.key,

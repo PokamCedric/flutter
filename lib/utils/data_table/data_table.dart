@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:job_listings/utils/data_table/text_cell.dart';
 
 class Datatable extends StatelessWidget {
-  final List<Map<String, String>> data;
+  final List<Map<String, dynamic>> data;
   final double containerWidth;
   final int rowsPerPage;
   final int currentPage;
