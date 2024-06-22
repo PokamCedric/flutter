@@ -137,6 +137,7 @@ class _FilterWidgetState extends State<Filter> {
                     },
                     child: const Text('Reset'),
                   ),
+                  const SizedBox(height: 10),
                 ],
               ),
               secondChild: Container(), // Empty container when collapsed

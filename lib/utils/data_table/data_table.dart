@@ -28,7 +28,7 @@ class Datatable extends StatelessWidget {
     // Filter visible columns based on isVisible flag
     List<DataColumn> visibleColumns = columns
         .where((column) => column.isVisible)
-        .map((column) => DataColumn(label: columnTitle(titleColor, column.label)))
+        .map((column) => DataColumn(label: columnTitle(column.label, titleColor)))
         .toList();
 
     return SizedBox(
@@ -67,9 +67,11 @@ class ColumnConfig {
 }
 
 // Helper function to create column titles with specified color
-Widget columnTitle(Color color, String title) {
+Widget columnTitle(String title, Color color) {
   return Text(
     title,
+    softWrap: false,
+    overflow: TextOverflow.ellipsis,
     style: TextStyle(color: color, fontWeight: FontWeight.bold),
   );
 }

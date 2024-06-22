@@ -27,7 +27,7 @@ class JobListingsPage extends StatelessWidget {
 }
 
 class JobListingsView extends StatelessWidget {
-  const JobListingsView({Key? key}) : super(key: key);
+  const JobListingsView({super.key});
 
   @override
   Widget build(BuildContext context) {
