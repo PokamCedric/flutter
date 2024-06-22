@@ -6,15 +6,17 @@ import 'package:job_listings/models/dropdown_filter_model.dart';
 import 'filter.dart';
 
 class FilterWidget extends StatelessWidget {
-  final int length;
+  final int totalItems;
+  final double filterWidth;
   final List<DropdownFilterModel> filters;
   final Function(Map<String, dynamic>) onFilterChanged;
 
   const FilterWidget({
     super.key,
-    required this.length,
+    required this.totalItems,
     required this.filters,
     required this.onFilterChanged,
+    this.filterWidth = 300.0
   });
 
   @override
@@ -22,7 +24,8 @@ class FilterWidget extends StatelessWidget {
     return BlocProvider(
       create: (context) => FilterBloc(),
       child: Filter(
-        length: length,
+        totalItems: totalItems,
+        filterWidth: filterWidth,
         filters: filters,
         onFilterChanged: onFilterChanged,
       ),

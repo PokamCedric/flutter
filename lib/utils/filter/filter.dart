@@ -4,14 +4,17 @@ import 'package:job_listings/models/dropdown_filter_model.dart';
 
 class Filter extends StatefulWidget {
   final List<DropdownFilterModel> filters;
-  final int length;
+  final int totalItems;
+  final double filterWidth;
   final ValueChanged<Map<String, dynamic>> onFilterChanged;
 
   const Filter({
     super.key,
     required this.filters,
     required this.onFilterChanged,
-    required this.length});
+    required this.totalItems,
+    required this.filterWidth
+    });
 
   @override
   _FilterWidgetState createState() => _FilterWidgetState();
@@ -39,10 +42,9 @@ class _FilterWidgetState extends State<Filter> {
       borderRadius: BorderRadius.zero,
     );
 
-    final double filterWidth = MediaQuery.of(context).size.width > 1100 ? 250.0 : 200.0;
 
     return Container(
-      width: filterWidth,
+      width: widget.filterWidth,
       decoration: filterBoxDecoration(color: Theme.of(context).primaryColor),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,7 +100,7 @@ class _FilterWidgetState extends State<Filter> {
                         label: filter.propertyName,
                         items: filter.items,
                         value: _selectedFilters[filter.propertyName]!, // Ensure this line reflects the selected filter value
-                        filterWidth: filterWidth,
+                        filterWidth: widget.filterWidth,
                         filterBoxDecoration: filterBoxDecoration(),
                         onChanged: (value) {
                           setState(() {
@@ -118,7 +120,7 @@ class _FilterWidgetState extends State<Filter> {
                       onPressed: () {
                         widget.onFilterChanged(_selectedFilters);
                       },
-                      child: Text('${widget.length} found'),
+                      child: Text('${widget.totalItems} found'),
                     ),
                   ),
                   const SizedBox(height: 10),

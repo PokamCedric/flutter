@@ -25,13 +25,15 @@ class JobListingsPage extends StatelessWidget {
     );
   }
 }
-
 class JobListingsView extends StatelessWidget {
   const JobListingsView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final double containerWidth = MediaQuery.of(context).size.width > 1100 ? 800.0 : 600.0;
+    final mediaWidth = MediaQuery.of(context).size.width;
+    final bool isDesktop = mediaWidth > 1100.0;
+    final double containerWidth = isDesktop ? 800.0 : 600.0;
+    final double filterWidth = isDesktop ? 250.0 : mediaWidth - 100.0;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -52,7 +54,25 @@ class JobListingsView extends StatelessWidget {
 
                   return SingleChildScrollView(
                     padding: const EdgeInsets.only(top: 50.0),
-                    child: desktopView(context, totalPages, containerWidth, state, filterState, dataTableState),
+                    child: isDesktop
+                        ? desktopView(
+                            context,
+                            totalPages,
+                            containerWidth,
+                            filterWidth,
+                            state,
+                            filterState,
+                            dataTableState,
+                          )
+                        : phoneView(
+                            context,
+                            totalPages,
+                            containerWidth,
+                            filterWidth,
+                            state,
+                            filterState,
+                            dataTableState,
+                          ),
                   );
                 },
               );
@@ -63,46 +83,39 @@ class JobListingsView extends StatelessWidget {
     );
   }
 
-  Widget desktopView(
-    BuildContext context,
-    int totalPages,
-    double containerWidth,
+  FilterWidget buildFilterWidget(
     JobListingsState state,
-    FilterState filterState,
-    DataTableState dataTableState) {
+    double filterWidth,
+    BuildContext context,
+  ) {
+    return FilterWidget(
+      totalItems: state.filteredJobs.length,
+      filterWidth: filterWidth,
+      filters: getDropdownFilterModels(),
+      onFilterChanged: (filters) =>
+          context.read<JobListingsBloc>().add(FilterJobsEvent(FilterModel.fromJson(filters))),
+    );
+  }
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Flexible(
-          flex: 3,
-          child: DataTableWidget(
-            data: state.filteredJobs.map((job) => job.toJson()).toList(),
-            containerWidth: containerWidth,
-            rowsPerPage: dataTableState.rowsPerPage,
-            currentPage: dataTableState.currentPage,
-            totalPages: totalPages,
-            totalHits: state.totalHits,
-            availableRowsPerPage: const [5, 10, 25, 50],
-            onPageChanged: (newPage) =>
-            context.read<DataTableBloc>().add(ChangePageEvent(newPage)),
-            onRowsPerPageChanged: (newRowsPerPage) =>
-            context.read<DataTableBloc>().add(ChangeRowsPerPageEvent(newRowsPerPage!)),
-            columns: getTableColumns(),
-          ),
-        ),
-        const SizedBox(width: 50), // space between table and filter
-        Flexible(
-          flex: 1,
-          child: FilterWidget(
-            length: state.filteredJobs.length,
-            filters: getDropdownFilterModels(),
-            onFilterChanged: (filters) =>
-              context.read<JobListingsBloc>().add(FilterJobsEvent(FilterModel.fromJson(filters))),
-          ),
-        ),
-      ],
+  DataTableWidget buildDataTableWidget(
+    JobListingsState state,
+    double containerWidth,
+    DataTableState dataTableState,
+    int totalPages,
+    BuildContext context,
+  ) {
+    return DataTableWidget(
+      data: state.filteredJobs.map((job) => job.toJson()).toList(),
+      containerWidth: containerWidth,
+      rowsPerPage: dataTableState.rowsPerPage,
+      currentPage: dataTableState.currentPage,
+      totalPages: totalPages,
+      totalHits: state.totalHits,
+      availableRowsPerPage: const [5, 10, 25, 50],
+      onPageChanged: (newPage) => context.read<DataTableBloc>().add(ChangePageEvent(newPage)),
+      onRowsPerPageChanged: (newRowsPerPage) =>
+          context.read<DataTableBloc>().add(ChangeRowsPerPageEvent(newRowsPerPage!)),
+      columns: getTableColumns(),
     );
   }
 
@@ -113,5 +126,51 @@ class JobListingsView extends StatelessWidget {
       ColumnConfig(label: 'Country', propertyName: 'country', isVisible: true),
       ColumnConfig(label: 'Field', propertyName: 'field', isVisible: true, width: 200.0),
     ];
+  }
+
+  Widget desktopView(
+    BuildContext context,
+    int totalPages,
+    double containerWidth,
+    double filterWidth,
+    JobListingsState state,
+    FilterState filterState,
+    DataTableState dataTableState,
+  ) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        buildDataTableWidget(state, containerWidth, dataTableState, totalPages, context),
+        const SizedBox(width: 50), // space between table and filter
+        buildFilterWidget(state, filterWidth, context),
+      ],
+    );
+  }
+
+  Widget phoneView(
+    BuildContext context,
+    int totalPages,
+    double containerWidth,
+    double filterWidth,
+    JobListingsState state,
+    FilterState filterState,
+    DataTableState dataTableState,
+  ) {
+    return Container(
+      alignment: Alignment.center,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          buildFilterWidget(state, filterWidth, context),
+          const SizedBox(height: 50), // space between table and filter
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: buildDataTableWidget(state, containerWidth, dataTableState, totalPages, context),
+          ),
+        ],
+      ),
+    );
   }
 }
