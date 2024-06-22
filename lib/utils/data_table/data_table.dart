@@ -19,7 +19,6 @@ class Datatable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double tableWidth = containerWidth - 200.0;
     final Color titleColor = Theme.of(context).primaryColor;
 
     final displayedJobs =
@@ -28,26 +27,36 @@ class Datatable extends StatelessWidget {
     // Filter visible columns based on isVisible flag
     List<DataColumn> visibleColumns = columns
         .where((column) => column.isVisible)
-        .map((column) => DataColumn(label: columnTitle(column.label, titleColor)))
+        .map((column) => DataColumn(
+              label: columnTitle(column.label, titleColor),
+            ))
         .toList();
 
     return SizedBox(
       width: containerWidth,
-      child: DataTable(
-        columns: visibleColumns,
-        rows: displayedJobs
-            .map(
-              (job) => DataRow(
-                cells: columns
-                    .where((column) => column.isVisible)
-                    .map((column) => DataCell(PaddedTextCell(
-                          text: job[column.propertyName] ?? "",
-                          width: tableWidth * (1 / visibleColumns.length),
-                        )))
-                    .toList(),
-              ),
-            )
-            .toList(),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: DataTable(
+          columnSpacing: 10, // Adjust spacing between columns as needed
+          columns: visibleColumns,
+          rows: displayedJobs
+              .map(
+                (job) => DataRow(
+                  cells: columns
+                      .where((column) => column.isVisible)
+                      .map(
+                        (column) => DataCell(
+                          PaddedTextCell(
+                            text: job[column.propertyName] ?? "",
+                            width: column.width,
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              )
+              .toList(),
+        ),
       ),
     );
   }
@@ -58,11 +67,13 @@ class ColumnConfig {
   final String label;
   final String propertyName; // Property name in the job map
   final bool isVisible; // Visibility flag
+  final double width;
 
   ColumnConfig({
     required this.label,
     required this.propertyName,
     this.isVisible = true, // Default visibility to true
+    this.width = 100.0, // Default visibility to true
   });
 }
 

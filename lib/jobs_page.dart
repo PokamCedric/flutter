@@ -108,10 +108,10 @@ class JobListingsView extends StatelessWidget {
 
   List<ColumnConfig> getTableColumns() {
     return [
-      ColumnConfig(label: 'Job Title', propertyName: 'title', isVisible: true),
-      ColumnConfig(label: 'Type of Function', propertyName: 'type', isVisible: true),
+      ColumnConfig(label: 'Job Title', propertyName: 'title', isVisible: true, width: 300.0),
+      ColumnConfig(label: 'Type of Function', propertyName: 'type', isVisible: true, width: 150.0),
       ColumnConfig(label: 'Country', propertyName: 'country', isVisible: true),
-      ColumnConfig(label: 'Field', propertyName: 'field', isVisible: true),
+      ColumnConfig(label: 'Field', propertyName: 'field', isVisible: true, width: 200.0),
     ];
   }
 }
