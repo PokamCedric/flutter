@@ -32,8 +32,8 @@ class JobListingsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaWidth = MediaQuery.of(context).size.width;
     final bool isDesktop = mediaWidth > 1100.0;
-    final double containerWidth = isDesktop ? 800.0 : 600.0;
-    final double filterWidth = isDesktop ? 250.0 : mediaWidth - 100.0;
+    final double containerWidth = isDesktop ? 800.0 : mediaWidth;
+    final double filterWidth = isDesktop ? 250.0 : mediaWidth - 50.0;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -67,7 +67,6 @@ class JobListingsView extends StatelessWidget {
                         : phoneView(
                             context,
                             totalPages,
-                            containerWidth,
                             filterWidth,
                             state,
                             filterState,
@@ -115,16 +114,17 @@ class JobListingsView extends StatelessWidget {
       onPageChanged: (newPage) => context.read<DataTableBloc>().add(ChangePageEvent(newPage)),
       onRowsPerPageChanged: (newRowsPerPage) =>
           context.read<DataTableBloc>().add(ChangeRowsPerPageEvent(newRowsPerPage!)),
-      columns: getTableColumns(),
+      columns: getTableColumns(containerWidth),
     );
   }
 
-  List<ColumnConfig> getTableColumns() {
+  List<ColumnConfig> getTableColumns(double containerWidth) {
+    const double defaultSpace = 50.0;
     return [
       ColumnConfig(label: 'Job Title', propertyName: 'title', isVisible: true, width: 300.0),
-      ColumnConfig(label: 'Type of Function', propertyName: 'type', isVisible: true, width: 150.0),
-      ColumnConfig(label: 'Country', propertyName: 'country', isVisible: true),
-      ColumnConfig(label: 'Field', propertyName: 'field', isVisible: true, width: 200.0),
+      ColumnConfig(label: 'Type of Function', propertyName: 'type', isVisible: containerWidth - defaultSpace > 300.0, width: 150.0),
+      ColumnConfig(label: 'Country', propertyName: 'country', isVisible: containerWidth - defaultSpace > 300.0 + 150.0),
+      ColumnConfig(label: 'Field', propertyName: 'field', isVisible: containerWidth - defaultSpace > 300.0 + 150.0 + 100.0, width: 200.0),
     ];
   }
 
@@ -151,8 +151,7 @@ class JobListingsView extends StatelessWidget {
   Widget phoneView(
     BuildContext context,
     int totalPages,
-    double containerWidth,
-    double filterWidth,
+    double mediaWidth,
     JobListingsState state,
     FilterState filterState,
     DataTableState dataTableState,
@@ -163,12 +162,9 @@ class JobListingsView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          buildFilterWidget(state, filterWidth, context),
+          buildFilterWidget(state, mediaWidth, context),
           const SizedBox(height: 50), // space between table and filter
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: buildDataTableWidget(state, containerWidth, dataTableState, totalPages, context),
-          ),
+          buildDataTableWidget(state, mediaWidth, dataTableState, totalPages, context),
         ],
       ),
     );
