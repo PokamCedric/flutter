@@ -3,6 +3,12 @@
 *.log
 *.pyc
 *.swp
+*.lock
+*.lock.lock
+.DS_Store
+/*.apk
+/*.ap_
+/*.hprof
 .DS_Store
 .atom/
 .buildlog/
@@ -16,6 +22,12 @@ migrate_working_dir/
 *.iws
 .idea/
 
+# VS Code related
+.vscode/
+
+# Build output
+build/
+
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
 # is commented out by default.
@@ -27,10 +39,10 @@ migrate_working_dir/
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
+/pubspec.lock
 .pub-cache/
 .pub/
 /build/
-build/
 
 # Symbolication related
 app.*.symbols
@@ -42,3 +54,28 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Generated files
+ios/Flutter/Flutter.framework/
+ios/Flutter/Flutter.podspec
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+ios/ServiceDefinitions.json
+ios/Runner/GeneratedPluginRegistrant.*
+android/.gradle
+android/app/proguard-rules.pro
+android/app/google-services.json
+android/key.properties
+android/gradle.properties
+android/local.properties
+android/app/build/
+android/app/*.keystore
+ios/Podfile.lock
+ios/Pods
+ios/Runner.xcworkspace
+ios/build/
+windows/Flutter/ephemeral/
+windows/CMakeCache.txt
+windows/flutter/ephemeral/
+macos/Flutter/ephemeral/
+linux/flutter/ephemeral/
