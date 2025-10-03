@@ -5,11 +5,11 @@ import 'package:template_app/_classes/herald/app_design.dart';
 import 'package:template_app/_classes/herald/app_locale.dart';
 import 'package:template_app/_classes/herald/app_zoom.dart';
 import 'package:template_app/_classes/structure/navigation/app_menu.dart';
-import 'package:template_app/_classes/storage/app_data.dart';
 import 'package:template_app/_configs/screen_helper.dart';
 import 'package:template_app/_configs/theme_helper.dart';
 import 'package:template_app/_ext/build_context_ext.dart';
 import 'package:template_app/design/wrapper/markdown_builder_wrapper.dart';
+import 'package:template_app/pages/_interfaces/widgets/drawer.dart';
 import 'package:template_app/pages/_interfaces/widgets/menu_widget.dart';
 import 'package:template_app/design/wrapper/input_controller_wrapper.dart';
 import 'package:template_app/design/wrapper/row_widget.dart';
@@ -21,7 +21,6 @@ import 'package:flutter_grid_layout/flutter_grid_layout.dart';
 import 'package:provider/provider.dart';
 
 abstract class AbstractPageState<T extends StatefulWidget> extends State<T> {
-  late AppData state;
 
   int selectedMenu = 0;
 
@@ -212,7 +211,7 @@ abstract class AbstractPageState<T extends StatefulWidget> extends State<T> {
     );
   }
 
-  Widget? buildNavigation() {
+  Widget buildNavigation() {
     return ListView.separated(
       scrollDirection: Axis.vertical,
       addSemanticIndexes: true,
@@ -228,14 +227,10 @@ abstract class AbstractPageState<T extends StatefulWidget> extends State<T> {
   }
 
   Drawer? buildDrawer() {
-    return Drawer(
-      elevation: 0,
-      shape: Border.all(width: 0),
-      child: ScreenHelper.state().isWide
-          ? buildNavigation()
-          : InputControllerWrapper(
-              child: buildNavigation() ?? ThemeHelper.emptyBox,
-            ),
+    return CustomDrawer(
+      selectedMenu: selectedMenu,
+      navigation: buildNavigation(),
+      onMenuSelected: (index) => setState(() => selectedMenu = index),
     );
   }
 
@@ -246,112 +241,107 @@ abstract class AbstractPageState<T extends StatefulWidget> extends State<T> {
       appBar: AppBar(backgroundColor: context.colorScheme.primary, toolbarHeight: 0),
       body: Container(
         color: context.colorScheme.primary,
-        child: SafeArea(child: Consumer<AppData>(builder: (context, appState, _) {
-          state = appState;
-          return LayoutBuilder(builder: (context, constraints) {
-            final display = ScreenHelper.getInstance(context, constraints);
-            final isBottom = display.isBottom && !display.isRight;
-            final hasKeyboard = ThemeHelper.isKeyboardVisible(context, constraints);
-            final height = constraints.maxHeight;
-            final blockHeight =
-                height / scale - (display.isRight ? 0 : ThemeHelper.barHeight + ThemeHelper.getIndent());
-            double width = constraints.maxWidth / scale;
-            Widget? rightBar;
-            Widget? leftBar;
-            if (display.isRight) {
-              rightBar = buildRightBar(context, constraints);
-              if (rightBar != null) {
-                width -= ThemeHelper.barHeight;
-              }
-            } else if (display.isWide) {
-              leftBar = buildNavigation();
-              if (leftBar != null) {
-                width -= ThemeHelper.menuWidth;
-              }
+        child: SafeArea(child: LayoutBuilder(builder: (context, constraints) {
+          final display = ScreenHelper.getInstance(context, constraints);
+          final isBottom = display.isBottom && !display.isRight;
+          final hasKeyboard = ThemeHelper.isKeyboardVisible(context, constraints);
+          final height = constraints.maxHeight;
+          final blockHeight =
+              height / scale - (display.isRight ? 0 : ThemeHelper.barHeight + ThemeHelper.getIndent());
+          double width = constraints.maxWidth / scale;
+          Widget? rightBar;
+          Widget? leftBar;
+          if (display.isRight) {
+            rightBar = buildRightBar(context, constraints);
+            if (rightBar != null) {
+              width -= ThemeHelper.barHeight;
             }
-            if (width < 0) {
-              width = 0;
-            }
-            final dx = (constraints.maxWidth - constraints.maxWidth / scale) / 2;
-            final dy = (height - height / scale) / 2;
-            return Scaffold(
-              appBar: display.isBottom ? null : buildBar(context, constraints),
-              drawer: buildDrawer(),
-              endDrawer: buildDrawer(),
-              floatingActionButtonLocation: isBottom ? FloatingActionButtonLocation.centerDocked : null,
-              floatingActionButton: isBottom
-                  ? hasKeyboard
-                      ? Transform.translate(
-                          offset: const Offset(0, 12),
-                          child: SizedBox(
-                            height: ThemeHelper.barHeight * 1.2,
-                            child: buildButton(context, constraints),
-                          ),
-                        )
-                      : defaultTargetPlatform == TargetPlatform.iOS
-                          ? buildButton(context, constraints)
-                          : Container(
-                              margin: EdgeInsets.only(bottom: ThemeHelper.getIndent()),
-                              child: buildButton(context, constraints),
-                            )
-                  : buildButton(context, constraints),
-              resizeToAvoidBottomInset: true,
-              body: InputControllerWrapper(
-                child: GridContainer(
-                  alignment: AppDesign.getAlignment<MainAxisAlignment>(),
-                  rows: const [ThemeHelper.menuWidth, null, ThemeHelper.barHeight],
-                  columns: const [null, ThemeHelper.barHeight],
-                  children: [
-                    if (leftBar != null)
-                      GridItem(
-                        order: 2,
-                        start: const Size(0, 0),
-                        end: const Size(1, 2),
-                        child: Container(
-                          color: context.colorScheme.inversePrimary.withValues(alpha: 0.2),
-                          width: ThemeHelper.menuWidth,
-                          height: double.infinity,
-                          child: buildNavigation(),
+          } else if (display.isWide) {
+            leftBar = buildNavigation();
+            width -= ThemeHelper.menuWidth;
+          }
+          if (width < 0) {
+            width = 0;
+          }
+          final dx = (constraints.maxWidth - constraints.maxWidth / scale) / 2;
+          final dy = (height - height / scale) / 2;
+          return Scaffold(
+            appBar: display.isBottom ? null : buildBar(context, constraints),
+            drawer: buildDrawer(),
+            endDrawer: buildDrawer(),
+            floatingActionButtonLocation: isBottom ? FloatingActionButtonLocation.centerDocked : null,
+            floatingActionButton: isBottom
+                ? hasKeyboard
+                    ? Transform.translate(
+                        offset: const Offset(0, 12),
+                        child: SizedBox(
+                          height: ThemeHelper.barHeight * 1.2,
+                          child: buildButton(context, constraints),
                         ),
-                      ),
+                      )
+                    : defaultTargetPlatform == TargetPlatform.iOS
+                        ? buildButton(context, constraints)
+                        : Container(
+                            margin: EdgeInsets.only(bottom: ThemeHelper.getIndent()),
+                            child: buildButton(context, constraints),
+                          )
+                : buildButton(context, constraints),
+            resizeToAvoidBottomInset: true,
+            body: InputControllerWrapper(
+              child: GridContainer(
+                alignment: AppDesign.getAlignment<MainAxisAlignment>(),
+                rows: const [ThemeHelper.menuWidth, null, ThemeHelper.barHeight],
+                columns: const [null, ThemeHelper.barHeight],
+                children: [
+                  if (leftBar != null)
                     GridItem(
-                      order: 1,
-                      start: Size(leftBar != null ? 1 : 0, 0),
-                      end: Size(rightBar != null ? 2 : 3, rightBar == null && display.isBottom ? 1 : 2),
-                      child: OverflowBox(
-                        alignment: Alignment.topLeft,
-                        minWidth: width,
-                        maxWidth: width,
-                        minHeight: blockHeight,
-                        maxHeight: blockHeight,
-                        child: Transform.translate(
-                          offset: Offset(dx, dy),
-                          child: Transform.scale(
-                            scale: scale,
-                            child: buildContent(context, constraints),
-                          ),
+                      order: 2,
+                      start: const Size(0, 0),
+                      end: const Size(1, 2),
+                      child: Container(
+                        color: context.colorScheme.inversePrimary.withValues(alpha: 0.2),
+                        width: ThemeHelper.menuWidth,
+                        height: double.infinity,
+                        child: buildNavigation(),
+                      ),
+                    ),
+                  GridItem(
+                    order: 1,
+                    start: Size(leftBar != null ? 1 : 0, 0),
+                    end: Size(rightBar != null ? 2 : 3, rightBar == null && display.isBottom ? 1 : 2),
+                    child: OverflowBox(
+                      alignment: Alignment.topLeft,
+                      minWidth: width,
+                      maxWidth: width,
+                      minHeight: blockHeight,
+                      maxHeight: blockHeight,
+                      child: Transform.translate(
+                        offset: Offset(dx, dy),
+                        child: Transform.scale(
+                          scale: scale,
+                          child: buildContent(context, constraints),
                         ),
                       ),
                     ),
-                    if (rightBar != null)
-                      GridItem(
-                        order: 2,
-                        start: const Size(2, 0),
-                        end: const Size(3, 2),
-                        child: rightBar,
-                      ),
-                    if (rightBar == null && display.isBottom)
-                      GridItem(
-                        order: 2,
-                        start: const Size(0, 1),
-                        end: const Size(3, 2),
-                        child: buildBottomBar(context, constraints),
-                      ),
-                  ],
-                ),
+                  ),
+                  if (rightBar != null)
+                    GridItem(
+                      order: 2,
+                      start: const Size(2, 0),
+                      end: const Size(3, 2),
+                      child: rightBar,
+                    ),
+                  if (rightBar == null && display.isBottom)
+                    GridItem(
+                      order: 2,
+                      start: const Size(0, 1),
+                      end: const Size(3, 2),
+                      child: buildBottomBar(context, constraints),
+                    ),
+                ],
               ),
-            );
-          });
+            ),
+          );
         })),
       ),
     );

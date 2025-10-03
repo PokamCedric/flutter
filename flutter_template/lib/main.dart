@@ -13,7 +13,6 @@ import 'package:template_app/_classes/herald/app_sync.dart';
 import 'package:template_app/_classes/herald/app_zoom.dart';
 import 'package:template_app/_classes/herald/app_theme.dart';
 import 'package:template_app/_classes/herald/app_palette.dart';
-import 'package:template_app/_classes/storage/app_data.dart';
 import 'package:template_app/_classes/storage/app_preferences.dart';
 import 'package:template_app/_configs/custom_color_scheme.dart';
 import 'package:template_app/_configs/custom_text_theme.dart';
@@ -40,9 +39,6 @@ void main() async {
           ChangeNotifierProvider<AppSync>(
             create: (_) => appSync,
           ),
-        ChangeNotifierProvider<AppData>(
-          create: (_) => AppData(appSync), // Use your existing AppData constructor
-        ),
         ChangeNotifierProvider<AppTheme>(
           create: (_) => AppTheme(ThemeMode.system), // Use your existing AppTheme
         ),

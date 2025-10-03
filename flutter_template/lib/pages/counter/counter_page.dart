@@ -1,11 +1,14 @@
 // Copyright 2023 The terCAD team. All rights reserved.
 // Use of this source code is governed by a CC BY-NC-ND 4.0 license that can be found in the LICENSE file.
 
+import 'package:template_app/_classes/herald/app_zoom.dart';
 import 'package:template_app/_configs/theme_helper.dart';
 import 'package:template_app/_ext/build_context_ext.dart';
 import 'package:template_app/design/wrapper/text_wrapper.dart';
 import 'package:template_app/pages/_interfaces/abstract_page_state.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 
 class CounterPage extends StatefulWidget {
   const CounterPage({super.key});
@@ -64,8 +67,8 @@ class CounterPageState extends AbstractPageState<CounterPage> {
     
     return Container(
       color: context.colorScheme.surface,
-      padding: EdgeInsets.all(ThemeHelper.getIndent(2)),
-      child: Center(
+      child: SingleChildScrollView(
+        padding: EdgeInsets.all(ThemeHelper.getIndent(2)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -155,6 +158,92 @@ class CounterPageState extends AbstractPageState<CounterPage> {
             
             SizedBox(height: ThemeHelper.getIndent(4)),
             
+            // Zoom control section
+            Container(
+              width: width > 400 ? 300 : width * 0.8,
+              padding: EdgeInsets.all(ThemeHelper.getIndent(2)),
+              decoration: BoxDecoration(
+                color: context.colorScheme.tertiaryContainer.withValues(alpha: 0.5),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: context.colorScheme.outline.withValues(alpha: 0.3),
+                ),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.zoom_in,
+                            size: 20,
+                            color: context.colorScheme.tertiary,
+                          ),
+                          SizedBox(width: ThemeHelper.getIndent(0.5)),
+                          TextWrapper(
+                            'Zoom Level',
+                            style: theme.textTheme.titleSmall?.copyWith(
+                              color: context.colorScheme.onTertiaryContainer,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      TextWrapper(
+                        '${(context.watch<AppZoom>().value * 100).toInt()}%',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          color: context.colorScheme.tertiary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: ThemeHelper.getIndent()),
+                  Slider(
+                    value: context.watch<AppZoom>().value,
+                    min: 0.6,
+                    max: 2.0,
+                    divisions: 28,
+                    label: '${(context.watch<AppZoom>().value * 100).toInt()}%',
+                    onChanged: (value) {
+                      context.read<AppZoom>().set(value);
+                    },
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextWrapper(
+                        '60%',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: context.colorScheme.onTertiaryContainer.withValues(alpha: 0.6),
+                        ),
+                      ),
+                      TextButton.icon(
+                        onPressed: () {
+                          context.read<AppZoom>().set(1);
+                        },
+                        icon: const Icon(Icons.refresh, size: 16),
+                        label: const TextWrapper('Reset'),
+                        style: TextButton.styleFrom(
+                          foregroundColor: context.colorScheme.tertiary,
+                        ),
+                      ),
+                      TextWrapper(
+                        '200%',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: context.colorScheme.onTertiaryContainer.withValues(alpha: 0.6),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            SizedBox(height: ThemeHelper.getIndent(4)),
+
             // Info card
             Container(
               width: width > 400 ? 300 : width * 0.8,
@@ -198,7 +287,7 @@ class CounterPageState extends AbstractPageState<CounterPage> {
                     style: theme.textTheme.bodyMedium?.copyWith(
                       color: context.colorScheme.onSurface.withValues(alpha: 0.8),
                     ),
-                    //textAlign: TextAlign.center,
+                    // textAlign: TextAlign.center, ERR: textAlign is not a property of TextWrapper
                   ),
                 ],
               ),
