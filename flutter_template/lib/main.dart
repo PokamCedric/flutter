@@ -9,15 +9,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 // Import your existing classes - NO REWRITES
 import 'package:template_app/_classes/herald/app_design.dart';
 import 'package:template_app/_classes/herald/app_locale.dart';
-import 'package:template_app/_classes/herald/app_sync.dart';
 import 'package:template_app/_classes/herald/app_zoom.dart';
 import 'package:template_app/_classes/herald/app_theme.dart';
 import 'package:template_app/_classes/herald/app_palette.dart';
 import 'package:template_app/_classes/storage/app_preferences.dart';
+import 'package:template_app/_configs/theme_helper.dart';
 import 'package:template_app/_configs/custom_color_scheme.dart';
 import 'package:template_app/_configs/custom_text_theme.dart';
-import 'package:template_app/pages/counter/counter_page.dart';
 import 'package:template_app/l10n/app_localization.dart';
+import 'package:template_app/pages/exples/counter_page.dart';
+import 'package:template_app/pages/exples/table_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,15 +31,13 @@ void main() async {
     DeviceOrientation.landscapeRight,
   ]);
 
-    AppPreferences.pref = await SharedPreferences.getInstance();
-    // CurrencyDefaults.cache = AppPreferences.pref;
-    final appSync = AppSync();
-    runApp(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<AppSync>(
-            create: (_) => appSync,
-          ),
+  // Initialize SharedPreferences using your existing AppPreferences
+  AppPreferences.pref = await SharedPreferences.getInstance();
+
+  runApp(
+    MultiProvider(
+      providers: [
+
         ChangeNotifierProvider<AppTheme>(
           create: (_) => AppTheme(ThemeMode.system), // Use your existing AppTheme
         ),
@@ -68,6 +67,7 @@ class MyApp extends StatelessWidget {
 
     Widget router(String route) => switch (route) {
       '/counter' => const CounterPage(),
+      '/table' => const TablePage(),
       '/' => const HomePage(),
       _ => const HomePage(),
     };
@@ -169,6 +169,17 @@ class HomePage extends StatelessWidget {
               },
               icon: const Icon(Icons.add_circle_outline),
               label: const Text('Open Counter Demo'),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+              ),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.pushNamed(context, '/table');
+              },
+              icon: const Icon(Icons.table_chart),
+              label: const Text('Open Table Demo'),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
               ),
