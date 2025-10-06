@@ -9,30 +9,9 @@ typedef LanguageDef = ({
 });
 
 const languageList = <LanguageDef>[
-  (id: 'ar', name: 'اللغة العربية (AR)'),
-  (id: 'az', name: 'Azərbaycanlı (AZ)'),
-  (id: 'be', name: 'Тарашкевіца (BE)'),
-  (id: 'be_EU', name: 'Latsinka (BE)'),
-  (id: 'zh', name: '简体中文 (ZH-CN)'),
-  (id: 'zh_TW', name: '繁體中文 (ZH-TW)'),
-  (id: 'cs', name: 'Čeština (CS)'),
-  (id: 'nl', name: 'Nederlandse (NL)'),
   (id: 'en', name: 'English (EN-US)'),
   (id: 'fr', name: 'Français (FR)'),
   (id: 'de', name: 'Deutsch (DE)'),
-  (id: 'hi', name: 'हिंदी (HI-IN)'),
-  (id: 'it', name: 'Italiano (IT)'),
-  (id: 'ja', name: '日本語 (JA)'),
-  (id: 'fa', name: 'فارسی (FA)'),
-  (id: 'ko', name: '한국어 (KO)'),
-  (id: 'pl', name: 'Polski (PL)'),
-  (id: 'pt', name: 'Português Europeu (PT)'),
-  (id: 'pt_BR', name: 'Português Brasileiro (PTB)'),
-  (id: 'ro', name: 'Limba română (RO)'),
-  (id: 'es', name: 'Español (ES)'),
-  (id: 'tr', name: 'Türk dili (TR)'),
-  (id: 'uk', name: 'Українська (UK-UA)'),
-  (id: 'uz', name: 'O\'zbek (UZ)'),
 ];
 
 String languageDesign(String? value) => switch (value) {
