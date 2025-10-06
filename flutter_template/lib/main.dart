@@ -7,18 +7,17 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Import your existing classes - NO REWRITES
-import 'package:template_app/_classes/herald/app_design.dart';
-import 'package:template_app/_classes/herald/app_locale.dart';
-import 'package:template_app/_classes/herald/app_zoom.dart';
-import 'package:template_app/_classes/herald/app_theme.dart';
-import 'package:template_app/_classes/herald/app_palette.dart';
-import 'package:template_app/_classes/storage/app_preferences.dart';
-import 'package:template_app/_configs/theme_helper.dart';
-import 'package:template_app/_configs/custom_color_scheme.dart';
-import 'package:template_app/_configs/custom_text_theme.dart';
+import 'package:template_app/application/state/app_design.dart';
+import 'package:template_app/application/state/app_locale.dart';
+import 'package:template_app/application/state/app_zoom.dart';
+import 'package:template_app/application/state/app_theme.dart';
+import 'package:template_app/application/state/app_palette.dart';
+import 'package:template_app/data/datasources/local/app_preferences.dart';
+import 'package:template_app/core/theme/custom_color_scheme.dart';
+import 'package:template_app/core/theme/custom_text_theme.dart';
 import 'package:template_app/l10n/app_localization.dart';
-import 'package:template_app/pages/exples/counter_page.dart';
-import 'package:template_app/pages/exples/table_page.dart';
+import 'package:template_app/presentation/pages/exples/counter_page.dart';
+import 'package:template_app/presentation/pages/exples/table_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -63,11 +62,11 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   WidgetBuilder? getPage(String route, Object? arguments) {
-    final args = arguments as Map<String, dynamic>?;
 
     Widget router(String route) => switch (route) {
       '/counter' => const CounterPage(),
-      '/table' => const TablePage(),
+      '/peoples' => const PeopleTablePage(),
+      '/products' => const ProductsTablePage(),
       '/' => const HomePage(),
       _ => const HomePage(),
     };
@@ -176,10 +175,21 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton.icon(
               onPressed: () {
-                Navigator.pushNamed(context, '/table');
+                Navigator.pushNamed(context, '/peoples');
               },
               icon: const Icon(Icons.table_chart),
-              label: const Text('Open Table Demo'),
+              label: const Text('Open People List'),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+              ),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.pushNamed(context, '/products');
+              },
+              icon: const Icon(Icons.table_chart),
+              label: const Text('Open Product List'),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
               ),
